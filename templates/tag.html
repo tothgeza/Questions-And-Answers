@@ -1,0 +1,61 @@
+{% extends 'layer.html' %}
+{% block title %}Tag{% endblock %}
+{% block body %}
+    <div class="tm10 w55">
+        <a class="material-icons icon-nav "
+           href="{{ url_for('display_question', question_id=question.id) }}">arrow_back</a>
+    </div>
+    <div class="card w55 tm15 bg-question">
+        <div class="flex-container">
+            <div class="flex-vote"></div>
+            <div class="flex-message w40">
+                <div class="title">{{ question.title }}</div>
+                <div class="message">{{ question.message | replace('\n','<br>') | safe }}</div>
+                <div class="flex-tags">
+                    {% for tag in tag_names %}
+                        <div class="tag-check">
+                            <label class="tag-label pr0 td02">{{ tag.name }}</label>
+                            <a class="material-icons md-18 pos"
+                               href="{{ '/question/'+question.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="view-date">
+                    <div class="view">
+                        <small>{{ question['view_number'] }} views</small>
+                    </div>
+                    <div class="comment">
+                        <div class="date"><small>{{ question['submission_time'].strftime("%B %d '%y") }}</small></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-image">
+                {% if question.image | string | if_exists %}
+                    <img src="{{ url_for('static', filename='images/' + question.image) }}" alt="" class="image">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <section class="card tm15 w30 p3070 bg-tag">
+        <form action="{{ url_for('add_tag_to_question', question_id=question.id) }}" method="post">
+            <div class="flex-tags">
+                {% for tag in tag_list %}
+                    <div class="tag-check">
+                        <label class="tag-label pr0 td02" for="tags">{{ tag.name }}</label>
+                        <input type="checkbox" value="{{ tag.name }}" name="tags" id="tags">
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="tag-input">
+                <label for="add-tag"></label>
+                <input type="text" id="add-tag" name="new_tag"
+                       onkeypress="return (event.charCode > 96 && event.charCode < 123) || (event.charCode===32)">
+            </div>
+            <div class="tag-button">
+                <button class="sort_button" type="submit">Add tags</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

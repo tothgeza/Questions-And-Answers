@@ -1,0 +1,33 @@
+{% extends 'form_answer.html' %}
+{% block title %}Add Comment{% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block body %}
+    {{ super() }}
+{% endblock %}
+
+{% block Tbg %}{{ 'bg-question' }}{% endblock %}
+{% block Ttitle %}{{ question.title }}{% endblock %}
+{% block Tmessage %}{{ question.message | replace('\n','<br>') | safe }}{% endblock %}
+{% block bg %}{{ 'bg-comment' }}{% endblock %}
+{% block Timage %}
+    {% if question.image | string | if_exists %}
+        <img src="{{ url_for('static', filename='images/' + question.image) }}" alt="" class="image">
+    {% else %}
+        <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+    {% endif %}
+{% endblock %}
+{% block action %}
+    {% if comment is defined %}
+        <form action="{{ url_for('edit_comment', comment_id=comment.id) }}"
+              method="POST">
+    {% else %}
+        <form action="{{ url_for('add_comment_to_question', question_id=question.id) }}"
+              method="POST">
+    {% endif %}
+{% endblock %}
+{% block message %}Comment{% endblock %}
+{% block textarea %}{{ comment.message if comment is defined }}{% endblock %}
+{% block submit %}{{ 'Update' if comment is defined else 'Add' }} Comment{% endblock %}

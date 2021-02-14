@@ -1,0 +1,84 @@
+{% extends "layer.html" %}
+{% block title %}Answer Form{% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block body %}
+    <div class="tm10 w55">
+        <a class="material-icons icon-nav "
+           href="{{ url_for('display_question', question_id=question.id) }}">arrow_back</a>
+    </div>
+    <div class="card w55 tm15 {% block Tbg %}bg-question{% endblock %}">
+        <div class="flex-container">
+            <div class="flex-vote"></div>
+            <div class="flex-message w40">
+                <div class="title">{% block Ttitle %}{{ question.title }}{% endblock %}</div>
+                <div class="message">
+                    {% block Tmessage %}{{ question.message | replace('\n','<br>') | safe }}{% endblock %}</div>
+                <div class="flex-tags">
+                    {% for tag in tag_names %}
+                        <div class="tag-check">
+                            <label class="tag-label pr0 td02">{{ tag.name }}</label>
+                            <a class="material-icons md-18 pos"
+                               href="{{ '/question/'+question.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="view-date">
+                    <div class="view">
+                        <small>{{ question['view_number'] }} views</small>
+                    </div>
+                    <div class="comment">
+                        <div class="date"><small>{{ question['submission_time'].strftime("%B %d '%y") }}</small></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-image">
+                {% block Timage %}
+                    {% if question.image | string | if_exists %}
+                        <img src="{{ url_for('static', filename='images/' + question.image) }}" alt="" class="image">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="td15 w55">
+        <div class="card w30 td15 p3070 {% block bg %}bg-answer{% endblock %}">
+            {% block action %}
+                {% if answer is defined %}
+                    <form action="{{ url_for('edit_answer', answer_id=answer.id) }}"
+                          method="POST" enctype="multipart/form-data">
+                {% else %}
+                    <form action="{{ url_for('add_answer', question_id=question.id) }}"
+                          method="POST" enctype="multipart/form-data">
+                {% endif %}
+            {% endblock %}
+            <div>
+                <label class="mb5" for="message">{% block message %}Answer{% endblock %} </label>
+            </div>
+            <div class="inputs">
+                <textarea name="message" id="message" cols="40" rows="10" required>{% block textarea %}
+                    {{ answer.message if answer is defined }}{% endblock %}</textarea><br>
+            </div>
+            <br>
+            {% block image %}
+                <div>
+                    <label for="image"></label>
+                </div>
+                <div>
+                    <input type="file" name="image" id="image" accept=".jpg, .png"
+                           value="{{ answer.image if answer is defined }}">
+                </div>
+                <br>
+            {% endblock %}
+            <div class="tag-button">
+                <button class="sort_button" type="submit">
+                    {% block submit %}Send Answer{% endblock %}</button>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

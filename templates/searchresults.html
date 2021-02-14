@@ -1,0 +1,99 @@
+{% extends "layer.html" %}
+{% block title %}List{% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block body %}
+
+    <div class="tm10 w55">
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">arrow_back</a>
+    </div>
+    {% for quest in questions %}
+        <div class="card w55 tm15 bg-question">
+            <div class="flex-container">
+                <div class="flex-vote">
+                    <a class="material-icons icon-vote"
+                       href="{{ url_for('question_vote_up', question_id=quest.id) }}">thumb_up</a>
+                    <div class="vote-string">{{ quest.vote_number }}</div>
+                    <a class="material-icons icon-vote"
+                       href="{{ url_for('question_vote_down', question_id=quest.id) }}">thumb_down</a>
+                </div>
+                <div class="flex-message w40">
+                    <div class="title">
+                        <a href="{{ url_for('display_question', question_id=quest.id) }}">
+                            {{ quest.title | replace('\n','<br>') | replace( phrase ,'<mark>' + phrase + '</mark>')
+                            | replace( phrase | capitalize ,'<mark>' + phrase | capitalize + '</mark>')
+                            | replace( phrase | upper,'<mark>' + phrase|upper + '</mark>')| safe }}</a>
+                    </div>
+                    <div class="message hidden-overflow">{{ quest.message | replace('\n','<br>') | replace( phrase ,'<mark>' + phrase + '</mark>')
+                            | replace( phrase | capitalize ,'<mark>' + phrase | capitalize + '</mark>')
+                            | replace( phrase | upper,'<mark>' + phrase|upper + '</mark>')| safe }}
+                    </div>
+                    <div class="flex-tags">
+                        {% for tag in tag_names %}
+                            {% if tag.question_id == quest.id %}
+                                <div class="tag-check">
+                                    <label class="tag-label pr0 td02">{{ tag.name }}</label>
+                                    <a class="material-icons md-18 pos"
+                                       href="{{ '/question/'+quest.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="view-date">
+                        <div class="view">
+                            <small>{{ quest['view_number'] }} views</small>
+                        </div>
+                        <div class="comment">
+                            <div class="date"><small>{{ quest['submission_time'].strftime("%B %d '%y") }}</small></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-image">
+                    {% if quest.image | string | if_exists %}
+                        <img src="{{ url_for('static', filename='images/' + quest.image) }}" alt="" class="image">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% for answer in answers %}
+            {% if quest.id == answer.question_id %}
+                <div class="td15 w55">
+                    <div class="card w50 tm15-comment bg-answer">
+                        <div class="flex-container">
+                            <div class="flex-vote">
+                                <a class="material-icons icon-vote"
+                                   href="{{ url_for('answer_vote_up', answer_id=answer.id) }}">
+                                    thumb_up
+                                </a>
+                                <div class="vote-string">{{ answer['vote_number'] }}</div>
+                                <a class="material-icons icon-vote"
+                                   href="{{ url_for('answer_vote_down', answer_id=answer.id) }}">
+                                    thumb_down
+                                </a>
+                            </div>
+                            <div class="flex-message w35">
+                                <div class="message m-h5">
+                                    {{ answer['message']  | replace('\n','<br>') | replace( phrase ,'<mark>' + phrase + '</mark>')
+                            | replace( phrase | capitalize ,'<mark>' + phrase | capitalize + '</mark>')
+                            | replace( phrase | upper,'<mark>' + phrase|upper + '</mark>')| safe }}
+                                </div>
+                                <div class="view-date">
+                                    <div class="view"></div>
+                                    <div class="comment"><small>{{ answer['submission_time'].strftime("%B %d '%y") }}</small></div>
+                                </div>
+                            </div>
+                            <div class="flex-image">
+                                <img src="{{ url_for('static', filename='images/' + answer['image']) }}" alt=""
+                                     class="image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "layer.html" %}
+{% block title %}Main{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    <div class="search-phrase w55">
+        <form action="/search" method="get">
+            <label for="search"></label>
+            <input type="text" id="search" name="q">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="tm10 w55">
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}">view_list</a>
+    </div>
+    <section class="main-frame">
+        {% for quest in questions %}
+            <div class="card w55 tm15 bg-question">
+                <div class="flex-container">
+                    <div class="flex-vote">
+                        <a class="material-icons icon-vote"
+                           href="{{ url_for('question_vote_up', question_id=quest.id) }}">
+                            thumb_up</a>
+                        <div class="vote-string">{{ quest[headers[3]] }}</div>
+                        <a class="material-icons icon-vote"
+                           href="{{ url_for('question_vote_down', question_id=quest.id) }}">
+                            thumb_down</a>
+                    </div>
+                    <div class="flex-message w40">
+                        <div class="title">
+                            <a href="{{ url_for('display_question', question_id=quest.id) }}">{{ quest[headers[4]] }}</a>
+                        </div>
+                        <div class="message hidden-overflow">
+                            {{ quest[headers[5]] | replace('\n','<br>') | safe }}
+                        </div>
+                        <div class="flex-tags">
+                            {% for tag in tag_names %}
+                                {% if tag.question_id == quest.id %}
+                                    <div class="tag-check">
+                                        <label class="tag-label pr0 td02">{{ tag.name }}</label>
+                                        <a class="material-icons md-18 pos"
+                                           href="{{ '/question/'+quest.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="view-date">
+                            <div class="view">
+                                <small>{{ quest[headers[2]] }} views</small>
+                            </div>
+                            <div class="comment">
+                                <div class="date"><small>{{ quest[headers[1]].strftime("%B %d '%y") }}</small></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-image">
+                        {% if quest.image | string | if_exists %}
+                            <img src="{{ url_for('static', filename='images/' + quest.image) }}" alt=""
+                                 class="image">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

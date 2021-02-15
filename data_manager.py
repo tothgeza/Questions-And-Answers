@@ -206,6 +206,20 @@ def get_question_owners(cursor):
 
 
 @connection.connection_handler
+def get_answer_owners(cursor, question_id):
+    query = """
+            SELECT answer.id, users.username AS name
+            FROM answer
+            JOIN users
+            ON answer.user_id = users.id
+            WHERE answer.question_id = %(question_id)s;
+            """
+    value = {'question_id': question_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_question_owner(cursor, question_id):
     query = """
             SELECT users.username AS name
@@ -215,6 +229,20 @@ def get_question_owner(cursor, question_id):
             WHERE question.id = %(question_id)s
             """
     value = {'question_id': question_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_answer_owner(cursor, answer_id):
+    query = """
+            SELECT users.username AS name
+            FROM answer
+            JOIN users
+            ON answer.user_id = users.id
+            WHERE answer.id = %(answer_id)s;
+            """
+    value = {'answer_id': answer_id}
     cursor.execute(query, value)
     return cursor.fetchall()
 
@@ -321,14 +349,14 @@ def get_user_id(cursor, username):
 
 
 @connection.connection_handler
-def add_answer(cursor, message, question_id, file_name):
+def add_answer(cursor, message, question_id, file_name, user_id):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """
-                INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
-                VALUES (%(new_time)s, %(vote)s, %(question_id)s, %(message)s, %(file_name)s);
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
+                VALUES (%(new_time)s, %(vote)s, %(question_id)s, %(message)s, %(file_name)s, %(user_id)s);
                 """
     value = {'new_time': new_time, 'vote': 0, 'question_id': question_id,
-             'message': message, 'file_name': file_name}
+             'message': message, 'file_name': file_name, 'user_id': user_id}
     cursor.execute(query, value)
 
 

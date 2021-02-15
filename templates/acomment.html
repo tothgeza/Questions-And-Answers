@@ -7,7 +7,11 @@
 {% block Tbg %}{{ 'bg-answer' }}{% endblock %}
 {% block Ttitle %}{% endblock %}
 {% block Tmessage %}{{ answer.message | replace('\n','<br>') | safe }}{% endblock %}
-{% block asked %}{% endblock %}
+{% block asked %}
+    <div>
+        <p class="float_right comment"><small>Answered</small> {{ answer_owner['name'] }}</p>
+    </div>
+{% endblock %}
 {% block bg %}{{ 'bg-comment' }}{% endblock %}
 {% block Timage %}
     {% if answer.image | string | if_exists %}
@@ -30,6 +34,6 @@
 {% block submit %}{{ 'Update' if comment is defined else 'Add' }} Comment{% endblock %}
 {% block head %}
     {{ super() }}
-
 {% endblock %}
+{% block image %}{% endblock %}
 

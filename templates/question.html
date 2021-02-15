@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <p class="float_right comment">
-                        <small>Asked</small> {{ question_owners[question.id]['username'] }}</p>
+                        <small>Asked</small> {{ question_owner['name'] }}</p>
                 </div>
                 <div class="view-date">
                     <div class="view">
@@ -128,6 +128,16 @@
                 <div class="flex-message w37">
                     <div class="message m-h5">
                         {{ answer[headers[4]]  | replace('\n','<br>') | safe }}
+                    </div>
+                    <div>
+                        <p class="float_right comment">
+                            <small>Answered</small>
+                            {% for owner in answer_owners %}
+                                {% if answer.id == owner.id %}
+                                    {{ owner.name }}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
                     </div>
                     <div class="view-date">
                         <div class="view"></div>

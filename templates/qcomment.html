@@ -34,3 +34,4 @@
 {% block message %}Comment{% endblock %}
 {% block textarea %}{{ comment.message if comment is defined }}{% endblock %}
 {% block submit %}{{ 'Update' if comment is defined else 'Add' }} Comment{% endblock %}
+{% block image %}{% endblock %}

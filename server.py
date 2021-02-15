@@ -96,7 +96,8 @@ def display_question(question_id):
         data_manager.increase_display_count(question_id)
     tag_names = data_manager.get_tag_name_by_question_id(question_id)
     question = data_manager.get_question_by_id(question_id)
-    question_owners = data_manager.get_question_owners()
+    question_owner = data_manager.get_question_owner(question_id)[0]
+    answer_owners = data_manager.get_answer_owners(question_id)
     answers_list = data_manager.get_answers_by_question_id(question_id)
     qcomments_list = data_manager.get_comments_by_q_id(question_id)
     acomments_list = data_manager.get_answers_comments_by_q_id(question_id)
@@ -105,7 +106,8 @@ def display_question(question_id):
                            qcomments=qcomments_list,
                            acomments=acomments_list,
                            tag_names=tag_names,
-                           question_owners=question_owners)
+                           question_owner=question_owner,
+                           answer_owners=answer_owners)
 
 
 @app.route("/question/<int:question_id>/new-tag", methods=['GET', 'POST'])
@@ -138,15 +140,19 @@ def add_comment_to_question(question_id):
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=['GET', 'POST'])
 def add_comment_to_answer(answer_id):
-    if request.method == "GET":
-        answer = data_manager.get_an_answer(answer_id)
-        question = data_manager.get_question_by_a_id(answer_id)
-        return render_template('acomment.html', answer=answer[0],
-                               question=question[0])
+    if 'id' not in session:
+        return redirect(url_for("main_page"))
     else:
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        data_manager.add_comment_to_answer(request.form['message'], answer_id)
-        return redirect(f"/question/{question_id}")
+        if request.method == "GET":
+            answer = data_manager.get_an_answer(answer_id)[0]
+            question = data_manager.get_question_by_a_id(answer_id)
+            answer_owner = data_manager.get_answer_owner(answer['id'])[0]
+            return render_template('acomment.html', answer=answer,
+                                   question=question[0], answer_owner=answer_owner)
+        else:
+            question_id = data_manager.get_question_id_by_answer_id(answer_id)
+            data_manager.add_comment_to_answer(request.form['message'], answer_id)
+            return redirect(f"/question/{question_id}")
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -169,21 +175,25 @@ def add_question():
 
 @app.route("/question/<int:question_id>/new-answer", methods=['GET', 'POST'])
 def add_answer(question_id):
-    if request.method == "GET":
-        question = data_manager.get_question_by_id(question_id)[0]
-        tag_names = data_manager.get_tag_name_by_question_id(question_id)
-        question_owner = data_manager.get_question_owner(question_id)[0]
-        return render_template('form_answer.html', question=question, tag_names=tag_names,
-                               question_owner=question_owner)
-    elif request.method == "POST":
-        file_name = "default.png"
-        uploaded_image = request.files['image']
-        if uploaded_image.filename != '':
-            uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
-            file_name = uploaded_image.filename
-            # !!!!! answer id
-        data_manager.add_answer(request.form['message'], question_id, file_name)
-        return redirect(url_for("display_question", question_id=question_id))
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
+    else:
+        if request.method == "GET":
+            question = data_manager.get_question_by_id(question_id)[0]
+            tag_names = data_manager.get_tag_name_by_question_id(question_id)
+            question_owner = data_manager.get_question_owner(question_id)[0]
+            return render_template('form_answer.html', question=question, tag_names=tag_names,
+                                   question_owner=question_owner)
+        elif request.method == "POST":
+            file_name = "default.png"
+            uploaded_image = request.files['image']
+            user_id = session['id']
+            if uploaded_image.filename != '':
+                uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
+                file_name = uploaded_image.filename
+                # !!!!! answer id
+            data_manager.add_answer(request.form['message'], question_id, file_name, user_id)
+            return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/search")
@@ -228,21 +238,24 @@ def edit_question(question_id):
 
 @app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
-    answer = data_manager.get_an_answer(answer_id)
-    if request.method == "GET":
-        question = data_manager.get_question_by_a_id(answer_id)[0]
-        question_owner = data_manager.get_question_owner(question['id'])[0]
-        return render_template("form_answer.html", question=question,
-                               answer=answer[0], question_owner=question_owner)
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
     else:
-        uploaded_image = request.files['image']
-        file_name = answer[0]['image']
-        if uploaded_image.filename != '':
-            uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
-            data_manager.delete_unused_image(file_name)
-            file_name = uploaded_image.filename
-        data_manager.update_answer(request.form['message'], file_name, answer_id)
-        return redirect(url_for("display_question", question_id=answer[0]['question_id']))
+        answer = data_manager.get_an_answer(answer_id)
+        if request.method == "GET":
+            question = data_manager.get_question_by_a_id(answer_id)[0]
+            question_owner = data_manager.get_question_owner(question['id'])[0]
+            return render_template("form_answer.html", question=question,
+                                   answer=answer[0], question_owner=question_owner)
+        else:
+            uploaded_image = request.files['image']
+            file_name = answer[0]['image']
+            if uploaded_image.filename != '':
+                uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
+                data_manager.delete_unused_image(file_name)
+                file_name = uploaded_image.filename
+            data_manager.update_answer(request.form['message'], file_name, answer_id)
+            return redirect(url_for("display_question", question_id=answer[0]['question_id']))
 
 
 @app.route("/comments/<comment_id>/edit", methods=['GET', 'POST'])
@@ -252,8 +265,10 @@ def edit_comment(comment_id):
         if comment['question_id'] is None:
             answer = data_manager.get_an_answer(comment['answer_id'])[0]
             question = data_manager.get_question_by_a_id(answer['id'])[0]
+            answer_owner = data_manager.get_answer_owner(answer['id'])[0]
             return render_template("acomment.html", answer=answer,
-                                   comment=comment, question=question)
+                                   comment=comment, question=question,
+                                   answer_owner=answer_owner)
         else:
             question = data_manager.get_question_by_id(comment['question_id'])[0]
             question_owner = data_manager.get_question_owner(question['id'])[0]

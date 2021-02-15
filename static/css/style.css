@@ -246,7 +246,7 @@ h3 {
 .view {
     float: left;
     margin-left: 5px;
-    margin-right: 15px;
+    margin-right: 10px;
     color: var(--gray-700)
 }
 
@@ -258,7 +258,7 @@ h3 {
 
 .comment {
     float: right;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
     color: var(--gray-700)
 }
 
@@ -507,6 +507,9 @@ input#reverse:hover{
 /*margin-right*/
 .mr10 {
     margin-right: 10px;
+}
+.mr5 {
+    margin-right: 5px;
 }
 /*margin-bottom*/
 .mb5 {

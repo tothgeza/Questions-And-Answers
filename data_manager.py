@@ -63,7 +63,10 @@ def get_tag_that_not_in_question(cursor, question_id):
 @connection.connection_handler
 def get_questions(cursor, order_by, reverse) -> List:
     query = """
-                SELECT * FROM question
+                SELECT q.*, u.username
+                FROM question q
+                JOIN users u 
+                ON q.user_id = u.id
                 ORDER BY {} {};
                 """.format(order_by, reverse)
     value = {'order_by': order_by, 'reverse': reverse}
@@ -86,8 +89,11 @@ def get_latest_five_questions(cursor, order_by, reverse) -> List:
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
     query = """
-                SELECT * FROM answer
-                WHERE %(question_id)s=question_id
+                SELECT a.*, u.username
+                FROM answer a
+                JOIN users u
+                ON a.user_id = u.id
+                WHERE a.question_id = %(question_id)s
                 ORDER BY vote_number DESC;
                 """
     value = {'question_id': question_id}
@@ -98,8 +104,11 @@ def get_answers_by_question_id(cursor, question_id):
 @connection.connection_handler
 def get_an_answer(cursor, answer_id):
     query = """
-                SELECT * FROM answer
-                WHERE %(answer_id)s=id;
+                SELECT a.*, u.username 
+                FROM answer a
+                JOIN users u 
+                ON a.user_id = u.id
+                WHERE a.id = %(answer_id)s;
                 """
     value = {'answer_id': answer_id}
     cursor.execute(query, value)
@@ -109,8 +118,11 @@ def get_an_answer(cursor, answer_id):
 @connection.connection_handler
 def get_question_by_id(cursor, question_id):
     query = """
-                SELECT * FROM question
-                WHERE %(question_id)s=id;
+                SELECT q.*, u.username
+                FROM question q
+                JOIN users u 
+                ON q.user_id = u.id
+                WHERE q.id = %(question_id)s;
                 """
     value = {'question_id': question_id}
     cursor.execute(query, value)
@@ -118,10 +130,12 @@ def get_question_by_id(cursor, question_id):
 
 
 @connection.connection_handler
-def get_comments_by_q_id(cursor, question_id):
+def get_question_comments_with_username(cursor, question_id):
     query = """
-                SELECT * FROM comment
-                WHERE %(question_id)s=question_id
+                SELECT c.*, u.username FROM comment c
+                JOIN users u
+                ON c.user_id = u.id
+                WHERE question_id = %(question_id)s
                 ORDER BY submission_time DESC;;
                 """
     value = {'question_id': question_id}
@@ -142,13 +156,16 @@ def get_comments_by_id(cursor, comment_id):
 
 
 @connection.connection_handler
-def get_answers_comments_by_q_id(cursor, question_id):
+def get_answers_comments_with_username(cursor, question_id):
     query = """
-                SELECT * FROM comment
+                SELECT c.*, u.username 
+                FROM comment c
+                JOIN users u
+                ON c.user_id = u.id
                 WHERE answer_id in 
-                (SELECT id FROM answer
-                WHERE %(question_id)s=question_id)
-                ORDER BY submission_time DESC;;
+                (SELECT answer.id FROM answer
+                WHERE answer.question_id = %(question_id)s)
+                ORDER BY submission_time DESC;
                 """
     value = {'question_id': question_id}
     cursor.execute(query, value)
@@ -158,10 +175,13 @@ def get_answers_comments_by_q_id(cursor, question_id):
 @connection.connection_handler
 def get_question_by_a_id(cursor, answer_id):
     query = """
-                SELECT * FROM question
-                WHERE id in 
-                (SELECT question_id FROM answer
-                WHERE %(answer_id)s=id);
+                SELECT q.*, u.username
+                FROM question q
+                JOIN users u 
+                ON q.user_id = u.id
+                WHERE q.id in 
+                (SELECT answer.question_id FROM answer
+                WHERE answer.id = %(answer_id)s);
                 """
     value = {'answer_id': answer_id}
     cursor.execute(query, value)
@@ -213,6 +233,20 @@ def get_answer_owners(cursor, question_id):
             JOIN users
             ON answer.user_id = users.id
             WHERE answer.question_id = %(question_id)s;
+            """
+    value = {'question_id': question_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comment_owners_to_question(cursor, question_id):
+    query = """
+            SELECT comment.id, users.username AS name
+            FROM comment
+            JOIN users
+            ON comment.user_id = users.id
+            WHERE comment.question_id = %(question_id)s;
             """
     value = {'question_id': question_id}
     cursor.execute(query, value)
@@ -453,24 +487,24 @@ def delete_tag_by_q_id(cursor, question_id, tag_id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, message, question_id):
+def add_comment_to_question(cursor, message, question_id, user_id):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """
-                INSERT INTO comment (question_id, message, submission_time) 
-                VALUES (%(question_id)s, %(message)s, %(new_time)s);
+                INSERT INTO comment (question_id, message, submission_time, user_id) 
+                VALUES (%(question_id)s, %(message)s, %(new_time)s, %(user_id)s);
                 """
-    value = {'question_id': question_id, 'message': message, 'new_time': new_time}
+    value = {'question_id': question_id, 'message': message, 'new_time': new_time, 'user_id': user_id}
     cursor.execute(query, value)
 
 
 @connection.connection_handler
-def add_comment_to_answer(cursor, message, answer_id):
+def add_comment_to_answer(cursor, message, answer_id, user_id):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """
-                INSERT INTO comment (answer_id, message, submission_time) 
-                VALUES (%(answer_id)s, %(message)s, %(new_time)s);
+                INSERT INTO comment (answer_id, message, submission_time, user_id) 
+                VALUES (%(answer_id)s, %(message)s, %(new_time)s, %(user_id)s);
                 """
-    value = {'answer_id': answer_id, 'message': message, 'new_time': new_time}
+    value = {'answer_id': answer_id, 'message': message, 'new_time': new_time, 'user_id': user_id}
     cursor.execute(query, value)
 
 

@@ -68,12 +68,7 @@
                         <div>
                             <p class="float_right comment">
                                 <small>Asked</small>
-                                {#                                {{ question_owners[quest.id]['username'] }}#}
-                                {% for owner in question_owners %}
-                                    {% if owner['id'] == quest.id %}
-                                        {{ owner['username'] }}
-                                    {% endif %}
-                                {% endfor %}
+                                {{ quest.username }}
                             </p>
                         </div>
                         <div class="view-date">

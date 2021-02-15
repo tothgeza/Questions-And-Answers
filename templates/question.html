@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <p class="float_right comment">
-                        <small>Asked</small> {{ question_owner['name'] }}</p>
+                        <small>Asked</small> {{ question.username }}</p>
                 </div>
                 <div class="view-date">
                     <div class="view">
@@ -87,6 +87,10 @@
                     <div class="flex-message w37">
                         <div class="message m-h5">
                             {{ comment['message'] | replace('\n','<br>') | safe }}
+                        </div>
+                        <div>
+                            <p class="float_right comment mr10">
+                                <small>Commented</small> {{ comment['username'] }}</p>
                         </div>
                         <div class="view-date">
                             <div class="view">
@@ -132,11 +136,7 @@
                     <div>
                         <p class="float_right comment">
                             <small>Answered</small>
-                            {% for owner in answer_owners %}
-                                {% if answer.id == owner.id %}
-                                    {{ owner.name }}
-                                {% endif %}
-                            {% endfor %}
+                            {{ answer.username }}
                         </p>
                     </div>
                     <div class="view-date">
@@ -171,6 +171,10 @@
                             <div class="flex-message w37">
                                 <div class="message m-h5">
                                     {{ comment['message'] | replace('\n','<br>') | safe }}
+                                </div>
+                                <div>
+                                    <p class="float_right comment mr10">
+                                        <small>Commented</small> {{ comment['username'] }}</p>
                                 </div>
                                 <div class="view-date">
                                     <div class="view"><small>{{ comment['edited_count'] }} edited</small></div>

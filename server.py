@@ -32,12 +32,10 @@ def hello():
     order_by = request.args.get('sort_by', 'submission_time')
     is_reversed = 'DESC' if request.args.get('reverse') else 'ASC'
     tag_names = data_manager.get_tags_to_question_id()
-    question_list = data_manager.get_questions(order_by, is_reversed)
-    question_owners = data_manager.get_question_owners()
+    questions = data_manager.get_questions(order_by, is_reversed)
     return render_template('index.html', headers=data_manager.QUESTION_HEADER,
-                           questions=question_list, title=data_manager.TITLE_HEADER,
-                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names,
-                           question_owners=question_owners)
+                           questions=questions, title=data_manager.TITLE_HEADER,
+                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names)
 
 
 @app.route("/registration", methods=['GET', 'POST'])
@@ -96,46 +94,47 @@ def display_question(question_id):
         data_manager.increase_display_count(question_id)
     tag_names = data_manager.get_tag_name_by_question_id(question_id)
     question = data_manager.get_question_by_id(question_id)
-    question_owner = data_manager.get_question_owner(question_id)[0]
-    answer_owners = data_manager.get_answer_owners(question_id)
-    answers_list = data_manager.get_answers_by_question_id(question_id)
-    qcomments_list = data_manager.get_comments_by_q_id(question_id)
-    acomments_list = data_manager.get_answers_comments_by_q_id(question_id)
+    answers = data_manager.get_answers_by_question_id(question_id)
+    qcomments_list = data_manager.get_question_comments_with_username(question_id)
+    acomments_list = data_manager.get_answers_comments_with_username(question_id)
     return render_template('question.html', headers=data_manager.ANSWER_HEADER,
-                           question=question[0], answers=answers_list,
+                           question=question[0], answers=answers,
                            qcomments=qcomments_list,
                            acomments=acomments_list,
-                           tag_names=tag_names,
-                           question_owner=question_owner,
-                           answer_owners=answer_owners)
+                           tag_names=tag_names)
 
 
 @app.route("/question/<int:question_id>/new-tag", methods=['GET', 'POST'])
 def add_tag_to_question(question_id):
-    tag_list = data_manager.get_tag_that_not_in_question(question_id)
-    if request.method == 'GET':
-        question = data_manager.get_question_by_id(question_id)[0]
-        tag_names = data_manager.get_tag_name_by_question_id(question_id)
-        return render_template('tag.html', tag_list=tag_list, question=question, tag_names=tag_names)
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
     else:
-        checked_tags = request.form.getlist('tags')
-        new_tag = request.form.get('new_tag', None).split()
-        tags = checked_tags + new_tag
-        for tag in tags:
-            data_manager.modify_tag(question_id, tag)
-        return redirect(f"/question/{question_id}")
+        tag_list = data_manager.get_tag_that_not_in_question(question_id)
+        if request.method == 'GET':
+            question = data_manager.get_question_by_id(question_id)[0]
+            tag_names = data_manager.get_tag_name_by_question_id(question_id)
+            return render_template('tag.html', tag_list=tag_list, question=question, tag_names=tag_names)
+        else:
+            checked_tags = request.form.getlist('tags')
+            new_tag = request.form.get('new_tag', None).split()
+            tags = checked_tags + new_tag
+            for tag in tags:
+                data_manager.modify_tag(question_id, tag)
+            return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<int:question_id>/new-comment", methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
-    if request.method == "GET":
-        question = data_manager.get_question_by_id(question_id)[0]
-        question_owner = data_manager.get_question_owner(question['id'])[0]
-        return render_template('qcomment.html', question=question,
-                               question_owner=question_owner)
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
     else:
-        data_manager.add_comment_to_question(request.form['message'], question_id)
-        return redirect(f"/question/{question_id}")
+        if request.method == "GET":
+            question = data_manager.get_question_by_id(question_id)[0]
+            return render_template('qcomment.html', question=question)
+        else:
+            user_id = session['id']
+            data_manager.add_comment_to_question(request.form['message'], question_id, user_id)
+            return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=['GET', 'POST'])
@@ -146,12 +145,13 @@ def add_comment_to_answer(answer_id):
         if request.method == "GET":
             answer = data_manager.get_an_answer(answer_id)[0]
             question = data_manager.get_question_by_a_id(answer_id)
-            answer_owner = data_manager.get_answer_owner(answer['id'])[0]
+            # answer_owner = data_manager.get_answer_owner(answer['id'])[0]
             return render_template('acomment.html', answer=answer,
-                                   question=question[0], answer_owner=answer_owner)
+                                   question=question[0])
         else:
+            user_id = session['id']
             question_id = data_manager.get_question_id_by_answer_id(answer_id)
-            data_manager.add_comment_to_answer(request.form['message'], answer_id)
+            data_manager.add_comment_to_answer(request.form['message'], answer_id, user_id)
             return redirect(f"/question/{question_id}")
 
 
@@ -181,9 +181,7 @@ def add_answer(question_id):
         if request.method == "GET":
             question = data_manager.get_question_by_id(question_id)[0]
             tag_names = data_manager.get_tag_name_by_question_id(question_id)
-            question_owner = data_manager.get_question_owner(question_id)[0]
-            return render_template('form_answer.html', question=question, tag_names=tag_names,
-                                   question_owner=question_owner)
+            return render_template('form_answer.html', question=question, tag_names=tag_names)
         elif request.method == "POST":
             file_name = "default.png"
             uploaded_image = request.files['image']
@@ -244,9 +242,8 @@ def edit_answer(answer_id):
         answer = data_manager.get_an_answer(answer_id)
         if request.method == "GET":
             question = data_manager.get_question_by_a_id(answer_id)[0]
-            question_owner = data_manager.get_question_owner(question['id'])[0]
             return render_template("form_answer.html", question=question,
-                                   answer=answer[0], question_owner=question_owner)
+                                   answer=answer[0])
         else:
             uploaded_image = request.files['image']
             file_name = answer[0]['image']
@@ -260,27 +257,26 @@ def edit_answer(answer_id):
 
 @app.route("/comments/<comment_id>/edit", methods=['GET', 'POST'])
 def edit_comment(comment_id):
-    comment = data_manager.get_comments_by_id(comment_id)[0]
-    if request.method == 'GET':
-        if comment['question_id'] is None:
-            answer = data_manager.get_an_answer(comment['answer_id'])[0]
-            question = data_manager.get_question_by_a_id(answer['id'])[0]
-            answer_owner = data_manager.get_answer_owner(answer['id'])[0]
-            return render_template("acomment.html", answer=answer,
-                                   comment=comment, question=question,
-                                   answer_owner=answer_owner)
-        else:
-            question = data_manager.get_question_by_id(comment['question_id'])[0]
-            question_owner = data_manager.get_question_owner(question['id'])[0]
-            return render_template("qcomment.html", question=question, comment=comment,
-                                   question_owner=question_owner)
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
     else:
-        message = request.form['message']
-        data_manager.update_comment(message, comment_id)
-        if comment['question_id'] is None:
-            answer = data_manager.get_an_answer(comment['answer_id'])[0]
-            comment = answer
-        return redirect(f"/question/{comment['question_id']}")
+        comment = data_manager.get_comments_by_id(comment_id)[0]
+        if request.method == 'GET':
+            if comment['question_id'] is None:
+                answer = data_manager.get_an_answer(comment['answer_id'])[0]
+                question = data_manager.get_question_by_a_id(answer['id'])[0]
+                return render_template("acomment.html", answer=answer,
+                                       comment=comment, question=question)
+            else:
+                question = data_manager.get_question_by_id(comment['question_id'])[0]
+                return render_template("qcomment.html", question=question, comment=comment)
+        else:
+            message = request.form['message']
+            data_manager.update_comment(message, comment_id)
+            if comment['question_id'] is None:
+                answer = data_manager.get_an_answer(comment['answer_id'])[0]
+                comment = answer
+            return redirect(f"/question/{comment['question_id']}")
 
 
 @app.route("/answer/<int:answer_id>/delete", methods=['GET'])

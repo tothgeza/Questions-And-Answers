@@ -9,7 +9,7 @@
 {% block Tmessage %}{{ answer.message | replace('\n','<br>') | safe }}{% endblock %}
 {% block asked %}
     <div>
-        <p class="float_right comment"><small>Answered</small> {{ answer_owner['name'] }}</p>
+        <p class="float_right comment"><small>Answered</small> {{ answer.username }}</p>
     </div>
 {% endblock %}
 {% block bg %}{{ 'bg-comment' }}{% endblock %}

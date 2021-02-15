@@ -60,6 +60,16 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
+                        <div>
+                            <p class="float_right comment"><small>Asked</small>
+{#                                {{ question_owners[quest.id]['username'] }}#}
+                                {% for owner in question_owners %}
+                                    {% if owner['id'] == quest.id %}
+                                        {{ owner['username'] }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
                         <div class="view-date">
                             <div class="view">
                                 <small>{{ quest[headers[2]] }} views</small>

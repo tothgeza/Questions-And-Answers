@@ -25,6 +25,11 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% block asked %}
+                    <div>
+                        <p class="float_right comment"><small>Asked</small> {{ question_owner['name'] }}</p>
+                    </div>
+                {% endblock %}
                 <div class="view-date">
                     <div class="view">
                         <small>{{ question['view_number'] }} views</small>
@@ -60,8 +65,8 @@
                 <label class="mb5" for="message">{% block message %}Answer{% endblock %} </label>
             </div>
             <div class="inputs">
-                <textarea name="message" id="message" cols="40" rows="10" required>{% block textarea %}
-                    {{ answer.message if answer is defined }}{% endblock %}</textarea><br>
+                <textarea name="message" id="message" cols="40" rows="10"
+                          required>{% block textarea %}{{ answer.message if answer is defined }}{% endblock %}</textarea><br>
             </div>
             <br>
             {% block image %}

@@ -2,15 +2,18 @@
 {% block title %}Add Comment{% endblock %}
 {% block head %}
     {{ super() }}
-
 {% endblock %}
 {% block body %}
     {{ super() }}
 {% endblock %}
-
 {% block Tbg %}{{ 'bg-question' }}{% endblock %}
 {% block Ttitle %}{{ question.title }}{% endblock %}
 {% block Tmessage %}{{ question.message | replace('\n','<br>') | safe }}{% endblock %}
+{% block asked %}
+    <div>
+        <p class="float_right comment"><small>Asked</small> {{ question_owner['name'] }}</p>
+    </div>
+{% endblock %}
 {% block bg %}{{ 'bg-comment' }}{% endblock %}
 {% block Timage %}
     {% if question.image | string | if_exists %}

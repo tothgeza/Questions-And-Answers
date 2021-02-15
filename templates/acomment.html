@@ -7,6 +7,7 @@
 {% block Tbg %}{{ 'bg-answer' }}{% endblock %}
 {% block Ttitle %}{% endblock %}
 {% block Tmessage %}{{ answer.message | replace('\n','<br>') | safe }}{% endblock %}
+{% block asked %}{% endblock %}
 {% block bg %}{{ 'bg-comment' }}{% endblock %}
 {% block Timage %}
     {% if answer.image | string | if_exists %}
@@ -31,3 +32,4 @@
     {{ super() }}
 
 {% endblock %}
+

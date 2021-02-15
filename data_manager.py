@@ -194,6 +194,32 @@ def search_in_questions(cursor, search_phrase):
 
 
 @connection.connection_handler
+def get_question_owners(cursor):
+    query = """
+            SELECT question.id, users.username
+            FROM question
+            JOIN users
+            ON question.user_id = users.id
+            """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_owner(cursor, question_id):
+    query = """
+            SELECT users.username AS name
+            FROM question
+            JOIN users
+            ON question.user_id = users.id
+            WHERE question.id = %(question_id)s
+            """
+    value = {'question_id': question_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def search_in_answers(cursor, search_phrase):
     query = """
                 SELECT * FROM answer
@@ -204,14 +230,14 @@ def search_in_answers(cursor, search_phrase):
 
 
 @connection.connection_handler
-def add_question(cursor, title, message, file_name):
+def add_question(cursor, title, message, file_name, user_id):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """
-                INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
-                VALUES (%(new_time)s, %(view)s, %(vote)s, %(title)s, %(message)s, %(file_name)s);
+                INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id) 
+                VALUES (%(new_time)s, %(view)s, %(vote)s, %(title)s, %(message)s, %(file_name)s, %(user_id)s);
                 """
     value = {'new_time': new_time, 'view': 0, 'vote': 0, 'title': title,
-             'message': message, 'file_name': file_name}
+             'message': message, 'file_name': file_name, 'user_id': user_id}
     cursor.execute(query, value)
 
 

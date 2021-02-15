@@ -20,9 +20,11 @@ def file_exist_filter(value):
 def main_page():
     question_list = data_manager.get_latest_five_questions('submission_time', 'DESC')
     tag_names = data_manager.get_tags_to_question_id()
+    question_owners = data_manager.get_question_owners()
+    print(question_owners)
     return render_template('main_page.html', headers=data_manager.QUESTION_HEADER,
                            questions=question_list, title=data_manager.TITLE_HEADER,
-                           tag_names=tag_names)
+                           tag_names=tag_names, question_owners=question_owners)
 
 
 @app.route("/list")
@@ -31,9 +33,11 @@ def hello():
     is_reversed = 'DESC' if request.args.get('reverse') else 'ASC'
     tag_names = data_manager.get_tags_to_question_id()
     question_list = data_manager.get_questions(order_by, is_reversed)
+    question_owners = data_manager.get_question_owners()
     return render_template('index.html', headers=data_manager.QUESTION_HEADER,
                            questions=question_list, title=data_manager.TITLE_HEADER,
-                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names)
+                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names,
+                           question_owners=question_owners)
 
 
 @app.route("/registration", methods=['GET', 'POST'])
@@ -92,6 +96,7 @@ def display_question(question_id):
         data_manager.increase_display_count(question_id)
     tag_names = data_manager.get_tag_name_by_question_id(question_id)
     question = data_manager.get_question_by_id(question_id)
+    question_owners = data_manager.get_question_owners()
     answers_list = data_manager.get_answers_by_question_id(question_id)
     qcomments_list = data_manager.get_comments_by_q_id(question_id)
     acomments_list = data_manager.get_answers_comments_by_q_id(question_id)
@@ -99,7 +104,8 @@ def display_question(question_id):
                            question=question[0], answers=answers_list,
                            qcomments=qcomments_list,
                            acomments=acomments_list,
-                           tag_names=tag_names)
+                           tag_names=tag_names,
+                           question_owners=question_owners)
 
 
 @app.route("/question/<int:question_id>/new-tag", methods=['GET', 'POST'])
@@ -121,8 +127,10 @@ def add_tag_to_question(question_id):
 @app.route("/question/<int:question_id>/new-comment", methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
     if request.method == "GET":
-        question = data_manager.get_question_by_id(question_id)
-        return render_template('qcomment.html', question=question[0])
+        question = data_manager.get_question_by_id(question_id)[0]
+        question_owner = data_manager.get_question_owner(question['id'])[0]
+        return render_template('qcomment.html', question=question,
+                               question_owner=question_owner)
     else:
         data_manager.add_comment_to_question(request.form['message'], question_id)
         return redirect(f"/question/{question_id}")
@@ -143,24 +151,30 @@ def add_comment_to_answer(answer_id):
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
-    if request.method == "GET":
-        return render_template("form_question.html")
-    elif request.method == "POST":
-        file_name = "default.png"
-        uploaded_image = request.files['image']
-        if uploaded_image.filename != '':
-            uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
-            file_name = uploaded_image.filename
-        data_manager.add_question(request.form['title'], request.form['message'], file_name)
-        return redirect("/")
+    if 'id' not in session:
+        return redirect(url_for("main_page"))
+    else:
+        if request.method == "GET":
+            return render_template("form_question.html")
+        elif request.method == "POST":
+            file_name = "default.png"
+            uploaded_image = request.files['image']
+            if uploaded_image.filename != '':
+                uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
+                file_name = uploaded_image.filename
+            user_id = session['id']
+            data_manager.add_question(request.form['title'], request.form['message'], file_name, user_id)
+            return redirect("/")
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=['GET', 'POST'])
 def add_answer(question_id):
     if request.method == "GET":
-        question = data_manager.get_question_by_id(question_id)
+        question = data_manager.get_question_by_id(question_id)[0]
         tag_names = data_manager.get_tag_name_by_question_id(question_id)
-        return render_template('form_answer.html', question=question[0], tag_names=tag_names)
+        question_owner = data_manager.get_question_owner(question_id)[0]
+        return render_template('form_answer.html', question=question, tag_names=tag_names,
+                               question_owner=question_owner)
     elif request.method == "POST":
         file_name = "default.png"
         uploaded_image = request.files['image']
@@ -178,18 +192,10 @@ def search_phrase():
     question_list = data_manager.search_in_questions(phrase)
     answers_list = data_manager.search_in_answers(phrase)
     tag_names = data_manager.get_tags_to_question_id()
-    # for question in question_list:
-    #     title = question['title']
-    #     new_title=""
-    #     length = len(phrase)
-    #     if phrase.lower() in title.lower():
-    #         for index, char in enumerate(title.lower()):
-    #             if char == phrase[0].lower() and title.lower()[index+length-1] == phrase[-1]:
-    #                 new_title += '<mark>' + char
-    #                 print(title)
-    #             new_title += char
+    # need filter question_owner!!!
+    question_owner = data_manager.get_question_owners()
     return render_template("searchresults.html", questions=question_list, phrase=phrase,
-                           answers=answers_list, tag_names=tag_names)
+                           answers=answers_list, tag_names=tag_names, question_owner=question_owner)
 
 
 @app.route("/question/<int:question_id>/delete")
@@ -203,27 +209,31 @@ def delete_question(question_id):
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = data_manager.get_question_by_id(question_id)
-    if request.method == "GET":
-        return render_template("form_question.html", question=question[0])
-    elif request.method == "POST":
-        uploaded_image = request.files['image']
-        file_name = data_manager.get_question_by_id(question_id)[0]['image']
-        if uploaded_image.filename != '':
-            uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
-            data_manager.delete_unused_image(file_name)
-            file_name = uploaded_image.filename
-            # file_name = f"question_{question_id}"
-        data_manager.update_question(request.form['title'], request.form['message'], file_name, question_id)
-        return redirect(url_for("display_question", question_id=question_id))
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
+    else:
+        question = data_manager.get_question_by_id(question_id)
+        if request.method == "GET":
+            return render_template("form_question.html", question=question[0])
+        elif request.method == "POST":
+            uploaded_image = request.files['image']
+            file_name = data_manager.get_question_by_id(question_id)[0]['image']
+            if uploaded_image.filename != '':
+                uploaded_image.save(data_manager.path_to_image(uploaded_image.filename))
+                data_manager.delete_unused_image(file_name)
+                file_name = uploaded_image.filename
+            data_manager.update_question(request.form['title'], request.form['message'], file_name, question_id)
+            return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
     answer = data_manager.get_an_answer(answer_id)
     if request.method == "GET":
-        return render_template("form_answer.html", question=data_manager.get_question_by_a_id(answer_id)[0],
-                               answer=answer[0])
+        question = data_manager.get_question_by_a_id(answer_id)[0]
+        question_owner = data_manager.get_question_owner(question['id'])[0]
+        return render_template("form_answer.html", question=question,
+                               answer=answer[0], question_owner=question_owner)
     else:
         uploaded_image = request.files['image']
         file_name = answer[0]['image']
@@ -246,7 +256,9 @@ def edit_comment(comment_id):
                                    comment=comment, question=question)
         else:
             question = data_manager.get_question_by_id(comment['question_id'])[0]
-            return render_template("qcomment.html", question=question, comment=comment)
+            question_owner = data_manager.get_question_owner(question['id'])[0]
+            return render_template("qcomment.html", question=question, comment=comment,
+                                   question_owner=question_owner)
     else:
         message = request.form['message']
         data_manager.update_comment(message, comment_id)

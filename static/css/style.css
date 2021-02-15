@@ -13,6 +13,7 @@
     --gray-700: #444;
     --black: #000;
     --blue: #0064BD;
+    --red: red;
     --light-green: #f1faef;
     --light-blue: #ecf7ff;
     --light-orange: #fdf7ea;
@@ -38,11 +39,19 @@ html {
     color: var(--gray-400);
 }
 
-.h1 {
+h1 {
     font-family: 'Roboto Slab', serif;
     font-weight: 400;
     margin: 25px 60px 18px 60px;
-    font-size: 3em !important;
+    font-size: 2em !important;
+    color: var(--gray-400);
+}
+h3 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 400;
+    margin: 0 auto 25px auto;
+    text-align: center;
+    font-size: 1.2em !important;
     color: var(--gray-400);
 }
 .logo {
@@ -276,7 +285,8 @@ input[type="checkbox"] {
     left: -8px;
     margin-right: 15px;
 }
-
+input[type="email"],
+input[type="password"],
 input[type="text"],
 textarea {
     font-size: 0.8em;
@@ -287,6 +297,10 @@ textarea {
 
 textarea:focus,
 textarea:hover,
+input[type="password"]:hover,
+input[type="password"]:focus,
+input[type="email"]:hover,
+input[type="email"]:focus,
 input[type="text"]:hover,
 input[type="text"]:focus {
     box-shadow: 0 0 6px #719ECE;
@@ -338,7 +352,9 @@ a:link,
 a:visited {
     text-decoration: none;
 }
-
+.alert {
+    color: var(--red);
+}
 button {
     font-size: 1em;
     padding: 0.2em 1.6em;

@@ -244,6 +244,45 @@ def update_comment(cursor, message, comment_id):
 
 
 @connection.connection_handler
+def check_user_data(cursor, column, data):
+    query = """
+                SELECT {}  
+                FROM users
+                WHERE {} = %(data)s;
+                """.format(column, column)
+    value = {'column': column, 'data': data}
+    cursor.execute(query, value)
+    # return cursor.fetchall()
+    if cursor.fetchall():
+        return True
+    return False
+
+
+@connection.connection_handler
+def add_user(cursor, username, email_address, password):
+    new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
+    query = """
+                INSERT INTO users (username, email_address, registration_date, reputation, password) 
+                VALUES (%(username)s, %(email_address)s, %(registration_date)s, %(reputation)s, %(password)s);
+                """
+    value = {'username': username, 'email_address': email_address, 'registration_date': new_time,
+             'reputation': 0, 'password': password}
+    cursor.execute(query, value)
+
+
+@connection.connection_handler
+def get_user_id(cursor, username):
+    query = """
+                SELECT id
+                FROM users
+                WHERE username = %(username)s;
+                """
+    value = {'username': username}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def add_answer(cursor, message, question_id, file_name):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """

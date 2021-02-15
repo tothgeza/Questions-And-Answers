@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import data_manager
 import util
 
-
 app = Flask(__name__)
+app.secret_key = b'\x8d)\xbe\x97\x0b_\xeaT\xbcV\xb5\xeb\xc7SZ\xccm\xc9O\xebD\x83\x80\xef'
 
 
 @app.template_filter('convert')
@@ -34,6 +34,26 @@ def hello():
     return render_template('index.html', headers=data_manager.QUESTION_HEADER,
                            questions=question_list, title=data_manager.TITLE_HEADER,
                            order_by=order_by, is_reversed=is_reversed, tag_names=tag_names)
+
+
+@app.route("/registration", methods=['GET', 'POST'])
+def route_registration():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = util.hash_password(request.form['password'])
+        if data_manager.check_user_data('email_address', email) is True:
+            flash('This email address is already taken!')
+            return redirect(request.url)
+        elif not util.verify_password(request.form['password2'], password):
+            flash('The passwords are different!')
+            return redirect(request.url)
+        else:
+            data_manager.add_user(email, email, password)
+            session['id'] = data_manager.get_user_id(email)[0]['id']
+            session['username'] = email
+            return redirect(url_for('main_page'))
+    else:
+        return render_template("registration.html")
 
 
 @app.route("/question/<int:question_id>")
@@ -144,9 +164,9 @@ def search_phrase():
 
 @app.route("/question/<int:question_id>/delete")
 def delete_question(question_id):
-    data_manager.delete_all_comments_by_que_id(question_id)
-    data_manager.delete_answer_by_question_id(question_id)
-    data_manager.delete_all_tag_by_q_id(question_id)
+    # data_manager.delete_all_comments_by_que_id(question_id)
+    # data_manager.delete_answer_by_question_id(question_id)
+    # data_manager.delete_all_tag_by_q_id(question_id)
     data_manager.delete_question_by_id(question_id)
     return redirect("/")
 
@@ -209,7 +229,7 @@ def edit_comment(comment_id):
 @app.route("/answer/<int:answer_id>/delete", methods=['GET'])
 def delete_answer(answer_id):
     question = data_manager.get_question_by_a_id(answer_id)[0]
-    data_manager.delete_all_comments_by_ans_id(answer_id)
+    # data_manager.delete_all_comments_by_ans_id(answer_id)
     data_manager.delete_answer_by_answer_id(answer_id)
     return redirect(url_for("display_question", question_id=question['id']))
 

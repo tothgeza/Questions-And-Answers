@@ -209,6 +209,20 @@ html {
 .title a{
     color: var(--blue)
 }
+
+.title-tag{
+    text-align: left;
+    height: 2rem;
+    margin: 15px 5px 0 10px;
+    font-size: 1.2em;
+    color: #ae7128;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 .message {
     min-height: 3rem;
     height: auto;

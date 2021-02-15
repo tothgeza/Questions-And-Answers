@@ -422,3 +422,16 @@ def path_to_image(file_name):
 
 def delete_unused_image(file_name):
     connection.delete_image(file_name)
+
+
+@connection.connection_handler
+def get_tags_with_question_counter(cursor):
+    query = """
+                SELECT tag.name, COUNT(question_tag.question_id)
+                FROM tag
+                JOIN question_tag
+                ON tag.id = question_tag.tag_id
+                GROUP BY tag.name;
+                """
+    cursor.execute(query)
+    return cursor.fetchall()

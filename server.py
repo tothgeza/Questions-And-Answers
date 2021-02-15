@@ -258,6 +258,12 @@ def delete_tag(question_id, tag_id):
     return redirect(request.referrer)
 
 
+@app.route("/tags")
+def list_tags():
+    tags = data_manager.get_tags_with_question_counter()
+    return render_template("tags.html", tags=tags)
+
+
 if __name__ == "__main__":
     app.run(
         port=5000,

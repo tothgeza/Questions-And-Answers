@@ -14,7 +14,13 @@
     </div>
     <div class="tm10 w55">
         <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}">view_list</a>
-        <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_registration') }}">assignment_ind</a>
+        {% if 'username' in session %}
+            <p class="float_right">{{ session['username'] }} logged in</p>
+            <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
+        {% else %}
+            <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_registration') }}">assignment_ind</a>
+            <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_login') }}">login</a>
+        {% endif %}
     </div>
     <section class="main-frame">
         {% for quest in questions %}
@@ -22,12 +28,16 @@
                 <div class="flex-container">
                     <div class="flex-vote">
                         <a class="material-icons icon-vote"
-                           href="{{ url_for('question_vote_up', question_id=quest.id) }}">
-                            thumb_up</a>
+                                {% if 'username' in session %}
+                           href="{{ url_for('question_vote_up', question_id=quest.id) }}"
+                                {% endif %}
+                        >thumb_up</a>
                         <div class="vote-string">{{ quest[headers[3]] }}</div>
                         <a class="material-icons icon-vote"
-                           href="{{ url_for('question_vote_down', question_id=quest.id) }}">
-                            thumb_down</a>
+                                {% if 'username' in session %}
+                           href="{{ url_for('question_vote_down', question_id=quest.id) }}"
+                                {% endif %}
+                        >thumb_down</a>
                     </div>
                     <div class="flex-message w40">
                         <div class="title">
@@ -41,8 +51,11 @@
                                 {% if tag.question_id == quest.id %}
                                     <div class="tag-check">
                                         <label class="tag-label pr0 td02">{{ tag.name }}</label>
-                                        <a class="material-icons md-18 pos"
-                                           href="{{ '/question/'+quest.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                                        {% if 'username' in session %}
+                                            <a class="material-icons md-18 pos"
+                                               href="{{ '/question/'+quest.id|string+'/tag/'+tag.id|string+'/delete' }}"
+                                            >clear</a>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}

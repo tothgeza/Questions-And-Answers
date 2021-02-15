@@ -14,10 +14,16 @@
             <div class="flex-container">
                 <div class="flex-vote">
                     <a class="material-icons icon-vote"
-                       href="{{ url_for('question_vote_up', question_id=quest.id) }}">thumb_up</a>
+                            {% if 'username' in session %}
+                       href="{{ url_for('question_vote_up', question_id=quest.id) }}"
+                            {% endif %}
+                    >thumb_up</a>
                     <div class="vote-string">{{ quest.vote_number }}</div>
                     <a class="material-icons icon-vote"
-                       href="{{ url_for('question_vote_down', question_id=quest.id) }}">thumb_down</a>
+                            {% if 'username' in session %}
+                       href="{{ url_for('question_vote_down', question_id=quest.id) }}"
+                            {% endif %}
+                    >thumb_down</a>
                 </div>
                 <div class="flex-message w40">
                     <div class="title">
@@ -66,14 +72,16 @@
                         <div class="flex-container">
                             <div class="flex-vote">
                                 <a class="material-icons icon-vote"
-                                   href="{{ url_for('answer_vote_up', answer_id=answer.id) }}">
-                                    thumb_up
-                                </a>
+                                        {% if 'username' in session %}
+                                   href="{{ url_for('answer_vote_up', answer_id=answer.id) }}"
+                                        {% endif %}
+                                >thumb_up</a>
                                 <div class="vote-string">{{ answer['vote_number'] }}</div>
                                 <a class="material-icons icon-vote"
-                                   href="{{ url_for('answer_vote_down', answer_id=answer.id) }}">
-                                    thumb_down
-                                </a>
+                                        {% if 'username' in session %}
+                                   href="{{ url_for('answer_vote_down', answer_id=answer.id) }}"
+                                        {% endif %}
+                                >thumb_down</a>
                             </div>
                             <div class="flex-message w35">
                                 <div class="message m-h5">
@@ -83,7 +91,8 @@
                                 </div>
                                 <div class="view-date">
                                     <div class="view"></div>
-                                    <div class="comment"><small>{{ answer['submission_time'].strftime("%B %d '%y") }}</small></div>
+                                    <div class="comment">
+                                        <small>{{ answer['submission_time'].strftime("%B %d '%y") }}</small></div>
                                 </div>
                             </div>
                             <div class="flex-image">

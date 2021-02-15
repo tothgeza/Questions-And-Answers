@@ -7,17 +7,25 @@
 {% block body %}
     <div class="tm10 w55">
         <a class="material-icons icon-nav " href="{{ url_for('hello') }}">arrow_back</a>
+        {% if 'username' in session %}
+            <p class="float_right">{{ session['username'] }} logged in</p>
+            <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
+        {% endif %}
     </div>
     <div class="card w55 tm15 bg-question">
         <div class="flex-container">
             <div class="flex-vote">
                 <a class="material-icons icon-vote"
-                   href="{{ url_for('question_vote_up', question_id=question.id) }}">
-                    thumb_up</a>
-                <div class="vote-string">{{ question.vote_number }}</div>
+                        {% if 'username' in session %}
+                   href="{{ url_for('question_vote_up', question_id=question.id) }}"
+                        {% endif %}
+                >thumb_up</a>
+                <div class="vote-string">{{ question['vote_number'] }}</div>
                 <a class="material-icons icon-vote"
-                   href="{{ url_for('question_vote_down', question_id=question.id) }}">
-                    thumb_down</a>
+                        {% if 'username' in session %}
+                   href="{{ url_for('question_vote_down', question_id=question.id) }}"
+                        {% endif %}
+                >thumb_down</a>
             </div>
             <div class="flex-message w37">
                 <div class="title">{{ question.title }}
@@ -29,8 +37,10 @@
                     {% for tag in tag_names %}
                         <div class="tag-check">
                             <label class="tag-label pr0 td02">{{ tag.name }}</label>
-                            <a class="material-icons md-18 pos"
-                               href="{{ '/question/'+question.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                            {% if 'username' in session %}
+                                <a class="material-icons md-18 pos"
+                                   href="{{ '/question/'+question.id|string+'/tag/'+tag.id|string+'/delete' }}">clear</a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -51,16 +61,18 @@
                 {% endif %}
             </div>
             <div class="flex-vote min-w0">
-                <a href="{{ url_for('edit_question', question_id=question.id) }}"
-                   class="material-icons icon-edit td5">edit</a>
-                <a href="{{ url_for('add_answer', question_id=question.id) }}"
-                   class="material-icons icon-edit td5">note_add</a>
-                <a href="{{ url_for('add_comment_to_question', question_id=question.id) }}"
-                   class="material-icons icon-edit td5">insert_comment</a>
-                <a href="{{ url_for('add_tag_to_question', question_id=question.id) }}"
-                   class="material-icons icon-edit td5">sell</a>
-                <a href="{{ url_for('delete_question', question_id=question.id) }}"
-                   class="material-icons icon-edit td5">delete</a>
+                {% if 'username' in session %}
+                    <a href="{{ url_for('edit_question', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">edit</a>
+                    <a href="{{ url_for('add_answer', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">note_add</a>
+                    <a href="{{ url_for('add_comment_to_question', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">insert_comment</a>
+                    <a href="{{ url_for('add_tag_to_question', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">sell</a>
+                    <a href="{{ url_for('delete_question', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">delete</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -76,15 +88,18 @@
                             <div class="view">
                                 <small>{{ comment['edited_count'] }} edited</small></div>
                             <div class="comment">
-                                <div class="view"><small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small></div>
+                                <div class="view"><small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="flex-vote min-w0">
-                        <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
-                           class="material-icons icon-edit td5">edit</a>
-                        <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"
-                           class="material-icons icon-edit td5">delete</a>
+                        {% if 'username' in session %}
+                            <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
+                               class="material-icons icon-edit td5">edit</a>
+                            <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"
+                               class="material-icons icon-edit td5">delete</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -94,13 +109,17 @@
         <div class="card w55 tm15 bg-answer">
             <div class="flex-container">
                 <div class="flex-vote">
-                    <a class="material-icons icon-vote" href="{{ url_for('answer_vote_up', answer_id=answer.id) }}">
-                        thumb_up
-                    </a>
+                    <a class="material-icons icon-vote"
+                            {% if 'username' in session %}
+                       href="{{ url_for('answer_vote_up', answer_id=answer.id) }}"
+                            {% endif %}
+                    >thumb_up</a>
                     <div class="vote-string">{{ answer[headers[2]] }}</div>
-                    <a class="material-icons icon-vote" href="{{ url_for('answer_vote_down', answer_id=answer.id) }}">
-                        thumb_down
-                    </a>
+                    <a class="material-icons icon-vote"
+                            {% if 'username' in session %}
+                       href="{{ url_for('answer_vote_down', answer_id=answer.id) }}"
+                            {% endif %}
+                    >thumb_down</a>
                 </div>
                 <div class="flex-message w37">
                     <div class="message m-h5">
@@ -119,12 +138,14 @@
                     {% endif %}
                 </div>
                 <div class="flex-vote min-w0">
-                    <a href="{{ url_for('edit_answer', answer_id=answer.id) }}"
-                       class="material-icons icon-edit td5">edit</a>
-                    <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
-                       class="material-icons icon-edit td5">insert_comment</a>
-                    <a href="{{ url_for('delete_answer', answer_id=answer.id) }}"
-                       class="material-icons icon-edit td5">delete</a>
+                    {% if 'username' in session %}
+                        <a href="{{ url_for('edit_answer', answer_id=answer.id) }}"
+                           class="material-icons icon-edit td5">edit</a>
+                        <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
+                           class="material-icons icon-edit td5">insert_comment</a>
+                        <a href="{{ url_for('delete_answer', answer_id=answer.id) }}"
+                           class="material-icons icon-edit td5">delete</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -140,15 +161,18 @@
                                 <div class="view-date">
                                     <div class="view"><small>{{ comment['edited_count'] }} edited</small></div>
                                     <div class="comment">
-                                        <div class="view"><small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small></div>
+                                        <div class="view">
+                                            <small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex-vote min-w0">
-                                <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
-                                   class="material-icons icon-edit td5">edit</a>
-                                <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"
-                                   class="material-icons icon-edit td5">delete</a>
+                                {% if 'username' in session %}
+                                    <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
+                                       class="material-icons icon-edit td5">edit</a>
+                                    <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"
+                                       class="material-icons icon-edit td5">delete</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

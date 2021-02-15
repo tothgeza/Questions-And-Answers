@@ -39,21 +39,51 @@ def hello():
 @app.route("/registration", methods=['GET', 'POST'])
 def route_registration():
     if request.method == 'POST':
+        username = request.form['username']
         email = request.form['email']
         password = util.hash_password(request.form['password'])
-        if data_manager.check_user_data('email_address', email) is True:
+        if data_manager.check_user_data('username', username) is True:
+            flash('This username is already taken!')
+            return redirect(request.url)
+        elif data_manager.check_user_data('email_address', email) is True:
             flash('This email address is already taken!')
             return redirect(request.url)
         elif not util.verify_password(request.form['password2'], password):
             flash('The passwords are different!')
             return redirect(request.url)
         else:
-            data_manager.add_user(email, email, password)
-            session['id'] = data_manager.get_user_id(email)[0]['id']
-            session['username'] = email
+            data_manager.add_user(username, email, password)
+            session['id'] = data_manager.get_user_id(username)[0]['id']
+            session['username'] = username
             return redirect(url_for('main_page'))
     else:
         return render_template("registration.html")
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def route_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        try:
+            if not util.verify_password(password, data_manager.get_password(username)[0]['password']):
+                flash("Incorrect password or username!")
+                return redirect(request.url)
+            else:
+                session['id'] = data_manager.get_user_id(username)[0]['id']
+                session['username'] = username
+                return redirect(url_for('main_page'))
+        except IndexError:
+            flash("Incorrect password or username!")
+            return redirect(request.url)
+    else:
+        return render_template("login.html")
+
+
+@app.route("/logout")
+def route_logout():
+    session.clear()
+    return redirect(url_for("main_page"))
 
 
 @app.route("/question/<int:question_id>")

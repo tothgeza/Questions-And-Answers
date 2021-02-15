@@ -169,6 +169,18 @@ def get_question_by_a_id(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_password(cursor, username):
+    query = """
+            SELECT password
+            FROM users
+            WHERE username = %(username)s;
+            """
+    value = {'username': username}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def search_in_questions(cursor, search_phrase):
     query = """
                 SELECT * FROM question

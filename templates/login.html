@@ -1,37 +1,21 @@
-{% extends "layer.html" %}
-{% block title %}
-    Registration
-{% endblock %}
-{% block head %}
-    {{ super() }}
-{% endblock %}
+{% extends 'layer.html' %}
+{% block title %}Login{% endblock %}
 {% block body %}
     <div class="w30 tm10 ta-left">
         <a class="material-icons icon-nav" href="{{ url_for('main_page') }}">arrow_back</a>
     </div>
     <div class="card w30 td15 bg-question p3070">
-        <h3>Registration</h3>
-        <form action="{{ url_for('route_registration') }}" method="POST">
+        <h3>Login</h3>
+        <form action="{{ url_for('route_login') }}" method="POST">
             <label class="mb5" for="username"> </label>
             <div class="inputs td15">
                 <input type="text" name="username" id="username" minlength="4"
                        placeholder="username" required>
             </div>
-            <label class="mb5" for="email"> </label>
-            <div class="inputs td15">
-                <input type="email" name="email" id="email" minlength="5"
-                       placeholder="email" required>
-            </div>
-
             <label class="mb5" for="pass"> </label>
             <div class="inputs td15">
                 <input type="password" name="password" id="pass" minlength="6"
                        placeholder="password" autocomplete="new-password" required>
-            </div>
-            <label class="mb5" for="pass2"> </label>
-            <div class="inputs td15">
-                <input type="password" name="password2" id="pass2" minlength="6"
-                       placeholder="password-again" autocomplete="new-password" required>
             </div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -42,8 +26,7 @@
                 {% endif %}
             {% endwith %}
             <div class="ta-center td15">
-                <button type="submit">Sign Up
-                </button>
+                <button type="submit">Login</button>
             </div>
         </form>
     </div>

@@ -41,7 +41,6 @@
                     <th id="date">Edited</th>
                     <th id="title">Questions</th>
                     <th id="link">Link</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -61,8 +60,8 @@
                 <tr class="bg-answer-dark">
                     <th id="date">Edited</th>
                     <th id="title">Answers</th>
+                    <th>Accepted</th>
                     <th id="link">Link</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -70,6 +69,7 @@
                     <tr>
                         <td>{{ answer.submission_time.strftime("%d-%m-%Y") }}</td>
                         <td>{{ answer.message }}</td>
+                        <td class="material-icons done-accepted-no-margin">{{ 'done' if answer.accepted }}</td>
                         <td class="links"><a href={{ url_for("display_question", question_id=answer.question_id) }}>Check</a></td>
                     </tr>
                 {% endfor %}
@@ -83,7 +83,6 @@
                     <th id="date">Edited</th>
                     <th id="title">Comments</th>
                     <th id="link">Link</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -104,5 +103,4 @@
             </table>
         </div>
     </section>
-
 {% endblock %}

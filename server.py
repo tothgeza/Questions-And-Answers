@@ -352,6 +352,17 @@ def answer_vote_down(answer_id):
     # return redirect(url_for(request.referrer))
 
 
+@app.route("/answer/<answer_id>/vote/<value>")
+def vote_accept(answer_id, value):
+    question = data_manager.get_question_by_a_id(answer_id)[0]
+    if 'id' in session and session['id'] == question['user_id']:
+        new_value = True if value == 'False' else False
+        data_manager.update_answer_accepted(answer_id, new_value)
+        return redirect(f"/question/{question['id']}")
+    else:
+        return redirect(f"/question/{question['id']}")
+
+
 @app.route("/question/<question_id>/tag/<tag_id>/delete")
 def delete_tag(question_id, tag_id):
     data_manager.delete_tag_by_q_id(question_id, tag_id)

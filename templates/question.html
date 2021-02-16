@@ -84,8 +84,8 @@
         <div class="td15 w55">
             <div class="card w40 tm15-comment bg-comment">
                 <div class="flex-container">
-                    <div class="flex-message w37">
-                        <div class="message m-h5">
+                    <div class="flex-message w37 pr10">
+                        <div class="message mt20 ml15">
                             {{ comment['message'] | replace('\n','<br>') | safe }}
                         </div>
                         <div>
@@ -93,7 +93,7 @@
                                 <small>Commented</small> {{ comment['username'] }}</p>
                         </div>
                         <div class="view-date">
-                            <div class="view">
+                            <div class="view ml15">
                                 <small>{{ comment['edited_count'] }} edited</small></div>
                             <div class="comment">
                                 <div class="view"><small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small>
@@ -114,69 +114,80 @@
         </div>
     {% endfor %}
     {% for answer in answers %}
-        <div class="card w55 tm15 bg-answer">
-            <div class="flex-container">
-                <div class="flex-vote">
-                    <a class="material-icons icon-vote"
-                            {% if 'username' in session %}
-                       href="{{ url_for('answer_vote_up', answer_id=answer.id) }}"
-                            {% endif %}
-                    >thumb_up</a>
-                    <div class="vote-string">{{ answer[headers[2]] }}</div>
-                    <a class="material-icons icon-vote"
-                            {% if 'username' in session %}
-                       href="{{ url_for('answer_vote_down', answer_id=answer.id) }}"
-                            {% endif %}
-                    >thumb_down</a>
-                </div>
-                <div class="flex-message w37">
-                    <div class="message m-h5">
-                        {{ answer[headers[4]]  | replace('\n','<br>') | safe }}
-                    </div>
-                    <div>
-                        <p class="float_right comment">
-                            <small>Answered</small>
-                            {{ answer.username }}
-                        </p>
-                    </div>
-                    <div class="view-date">
-                        <div class="view"></div>
-                        <div class="comment"><small>{{ answer[headers[1]].strftime("%B %d '%y") }}</small></div>
-                    </div>
-                </div>
-                <div class="flex-image">
-                    {% if answer['image'] | string | if_exists %}
-                        <img src="{{ url_for('static', filename='images/' + answer['image']) }}" alt="" class="image">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
-                    {% endif %}
-                </div>
-                <div class="flex-vote min-w0">
+        {% if answer.accepted %}
+            <div class="card card-accepted w55 tm15 bg-answer">
+        {% else %}
+            <div class="card w55 tm15 bg-answer">
+        {% endif %}
+    <div class="flex-container">
+        <div class="flex-vote">
+            {% if answer.accepted %}
+                <a class="material-icons done-accepted"
+                   href="/answer/{{ answer.id }}/vote/{{ answer.accepted }}">done</a>
+            {% else %}
+                <a class="material-icons done"
+                   href="/answer/{{ answer.id }}/vote/{{ answer.accepted }}">done</a>
+            {% endif %}
+            <a class="material-icons icon-vote"
                     {% if 'username' in session %}
-                        <a href="{{ url_for('edit_answer', answer_id=answer.id) }}"
-                           class="material-icons icon-edit td5">edit</a>
-                        <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
-                           class="material-icons icon-edit td5">insert_comment</a>
-                        <a href="{{ url_for('delete_answer', answer_id=answer.id) }}"
-                           class="material-icons icon-edit td5">delete</a>
+               href="{{ url_for('answer_vote_up', answer_id=answer.id) }}"
                     {% endif %}
-                </div>
+            >thumb_up</a>
+            <div class="vote-string">{{ answer[headers[2]] }}</div>
+            <a class="material-icons icon-vote"
+                    {% if 'username' in session %}
+               href="{{ url_for('answer_vote_down', answer_id=answer.id) }}"
+                    {% endif %}
+            >thumb_down</a>
+        </div>
+        <div class="flex-message w37">
+            <div class="message m-h5 mt20">
+                {{ answer[headers[4]]  | replace('\n','<br>') | safe }}
+            </div>
+            <div>
+                <p class="float_right comment">
+                    <small>Answered</small>
+                    {{ answer.username }}
+                </p>
+            </div>
+            <div class="view-date">
+                <div class="view"></div>
+                <div class="comment"><small>{{ answer[headers[1]].strftime("%B %d '%y") }}</small></div>
             </div>
         </div>
+        <div class="flex-image">
+            {% if answer['image'] | string | if_exists %}
+                <img src="{{ url_for('static', filename='images/' + answer['image']) }}" alt="" class="image">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/default.png') }}" alt="" class="image">
+            {% endif %}
+        </div>
+        <div class="flex-vote min-w0">
+            {% if 'username' in session %}
+                <a href="{{ url_for('edit_answer', answer_id=answer.id) }}"
+                   class="material-icons icon-edit td5">edit</a>
+                <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
+                   class="material-icons icon-edit td5">insert_comment</a>
+                <a href="{{ url_for('delete_answer', answer_id=answer.id) }}"
+                   class="material-icons icon-edit td5">delete</a>
+            {% endif %}
+        </div>
+    </div>
+    </div>
         {% for comment in acomments %}
             {% if comment.answer_id == answer.id %}
                 <div class="td15 w55">
                     <div class="card tm15-comment bg-comment w40">
                         <div class="flex-container">
-                            <div class="flex-message w37">
-                                <div class="message m-h5">
+                            <div class="flex-message w37 pr10">
+                                <div class="message mt20 ml15">
                                     {{ comment['message'] | replace('\n','<br>') | safe }}
                                 </div>
                                 <div>
                                     <p class="float_right comment mr10">
                                         <small>Commented</small> {{ comment['username'] }}</p>
                                 </div>
-                                <div class="view-date">
+                                <div class="view-date ml15">
                                     <div class="view"><small>{{ comment['edited_count'] }} edited</small></div>
                                     <div class="comment">
                                         <div class="view">

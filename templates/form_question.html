@@ -23,9 +23,9 @@
             <form action="{{ url_for('add_question') }}"
                   method="POST" enctype="multipart/form-data">
         {% endif %}
-        <label class="mb5" for="title">Title</label>
+        <label class="mb5" for="title2">Title</label>
         <div class="inputs">
-            <input type="text" name="title" id="title" minlength="5"
+            <input type="text" name="title" id="title2" minlength="5"
                    value="{{ question.title if question is defined }}">
         </div>
         <br>

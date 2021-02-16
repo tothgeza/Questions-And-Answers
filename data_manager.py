@@ -400,6 +400,16 @@ def update_answer(cursor, message, file_name, answer_id):
 
 
 @connection.connection_handler
+def update_answer_accepted(cursor, answer_id, value):
+    query = """
+            UPDATE answer SET accepted = %(value)s
+            WHERE id = %(answer_id)s;
+            """
+    value = {'value': value, 'answer_id': answer_id}
+    cursor.execute(query, value)
+
+
+@connection.connection_handler
 def update_comment(cursor, message, comment_id):
     new_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = """

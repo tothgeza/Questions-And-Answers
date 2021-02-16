@@ -36,7 +36,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    accepted boolean DEFAULT FALSE
 );
 
 DROP TABLE IF EXISTS public.comment;

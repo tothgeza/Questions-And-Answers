@@ -15,6 +15,7 @@
     <div class="tm10 w55">
         <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}">view_list</a>
         {% if 'username' in session %}
+            <a class="material-icons md-24 icon-nav" href="{{ url_for('users_list') }}">people</a>
             <p class="float_right">{{ session['username'] }} logged in</p>
             <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
         {% else %}
@@ -62,12 +63,7 @@
                         </div>
                         <div>
                             <p class="float_right comment"><small>Asked</small>
-{#                                {{ question_owners[quest.id]['username'] }}#}
-                                {% for owner in question_owners %}
-                                    {% if owner['id'] == quest.id %}
-                                        {{ owner['username'] }}
-                                    {% endif %}
-                                {% endfor %}
+                                {{ quest.username }}
                             </p>
                         </div>
                         <div class="view-date">

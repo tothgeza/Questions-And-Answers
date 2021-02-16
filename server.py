@@ -18,13 +18,11 @@ def file_exist_filter(value):
 
 @app.route("/")
 def main_page():
-    question_list = data_manager.get_latest_five_questions('submission_time', 'DESC')
+    questions = data_manager.get_latest_five_questions('submission_time', 'DESC')
     tag_names = data_manager.get_tags_to_question_id()
-    question_owners = data_manager.get_question_owners()
-    print(question_owners)
     return render_template('main_page.html', headers=data_manager.QUESTION_HEADER,
-                           questions=question_list, title=data_manager.TITLE_HEADER,
-                           tag_names=tag_names, question_owners=question_owners)
+                           questions=questions, title=data_manager.TITLE_HEADER,
+                           tag_names=tag_names)
 
 
 @app.route("/list")
@@ -86,6 +84,15 @@ def route_login():
 def route_logout():
     session.clear()
     return redirect(url_for("main_page"))
+
+
+@app.route("/users")
+def users_list():
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
+    else:
+        users = data_manager.get_all_users()
+        return render_template("list_users.html", users=users)
 
 
 @app.route("/question/<int:question_id>")

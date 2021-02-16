@@ -46,6 +46,7 @@ h1 {
     font-size: 2em !important;
     color: var(--gray-400);
 }
+
 h3 {
     font-family: 'Roboto Slab', serif;
     font-weight: 400;
@@ -54,17 +55,20 @@ h3 {
     font-size: 1.2em !important;
     color: var(--gray-400);
 }
+
 .logo {
     justify-items: center;
     align-items: center;
 }
-.logo img{
+
+.logo img {
     width: 100px;
 
 }
+
 /*search field*/
 
-.search-phrase{
+.search-phrase {
     margin: 40px auto;
     text-align: center;
 }
@@ -72,6 +76,7 @@ h3 {
 .main-frame {
     margin: 20px 0 40px 0;
 }
+
 /*question card*/
 
 .card {
@@ -95,10 +100,12 @@ h3 {
 .bg-answer {
     background-color: var(--light-green);
 }
+
 .answer-bg2 {
     background-color: #f1faef;
     margin-right: 0;
 }
+
 .bg-comment {
     background-color: var(--gray-100);
 }
@@ -106,25 +113,28 @@ h3 {
 .bg-tag {
     background-color: var(--light-orange);
 }
+
 .bg-form {
     background-color: var(--gray-200);
 }
 
 /*icons*/
-.icon-edit{
+.icon-edit {
     /*font-size: 1em;*/
     color: black;
-    margin:0 5px;
+    margin: 0 5px;
 }
+
 .icon-vote {
     font-size: 1em;
     color: var(--blue);
-    margin:0 5px;
+    margin: 0 5px;
 }
-.icon-nav{
+
+.icon-nav {
     font-size: 1em;
     color: black;
-    margin:0 5px;
+    margin: 0 5px;
 }
 
 .material-icons.md-18 {
@@ -172,7 +182,7 @@ h3 {
     margin: 0;
 }
 
-.flex-tags{
+.flex-tags {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -180,7 +190,7 @@ h3 {
 }
 
 /*tags label*/
-.tag-label{
+.tag-label {
     font-size: 0.8em;
     padding: 1px 5px 3px 5px;
     margin: 5px 10px;
@@ -189,7 +199,7 @@ h3 {
 }
 
 /*vote*/
-.flex-vote a{
+.flex-vote a {
     text-align: center;
 }
 
@@ -215,9 +225,11 @@ h3 {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
-.title a{
+
+.title a {
     color: var(--blue)
 }
+
 .message {
     min-height: 3rem;
     height: auto;
@@ -285,6 +297,7 @@ input[type="checkbox"] {
     left: -8px;
     margin-right: 15px;
 }
+
 input[type="email"],
 input[type="password"],
 input[type="text"],
@@ -308,8 +321,8 @@ input[type="text"]:focus {
     outline: none;
 }
 
-.tag-check{
-    display:flex;
+.tag-check {
+    display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     margin: 5px 10px;
@@ -318,7 +331,7 @@ input[type="text"]:focus {
     border-radius: 4px;
 }
 
-.tag-check input{
+.tag-check input {
     position: relative;
     vertical-align: middle;
     top: 4px;
@@ -326,14 +339,16 @@ input[type="text"]:focus {
     margin: 0 5px 0 5px;
 
 }
-input#add-tag{
+
+input#add-tag {
     width: 20rem;
 }
 
-.tag-input{
+.tag-input {
     text-align: center;
     margin: 2rem auto 0 auto;
 }
+
 .tag-button {
     text-align: center;
     /*border: 1px solid black;*/
@@ -352,9 +367,11 @@ a:link,
 a:visited {
     text-decoration: none;
 }
+
 .alert {
     color: var(--red);
 }
+
 button {
     font-size: 1em;
     padding: 0.2em 1.6em;
@@ -375,7 +392,7 @@ button:active {
     box-shadow: 0 0 5px #719ECE;
 }
 
-.pos{
+.pos {
     position: relative;
     vertical-align: middle;
     top: 1px;
@@ -384,104 +401,182 @@ button:active {
     padding: 0;
     color: black;
 }
-.pos:hover{
+
+.pos:hover {
     color: red;
 }
-mark{
+
+mark {
     background-color: darkorange;
 }
 
 #reverse,
-#label{
+#label {
     font-size: 1.1em;
 }
-select#sort_by{
+
+select#sort_by {
 
 }
+
 select#sort_by {
     font-size: 1em;
     padding: 0.2em 1.6em;
-	width: 10rem;
-	max-width: 10rem;
-	margin: 15px 0.2em 0.2em 0;
-	border: 1px solid #aaa;
-	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
-	border-radius: 4px;
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #fff;
-	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
-    linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
-	background-repeat: no-repeat, repeat;
-	background-position: right .7em top 50%, 0 0;
-	background-size: .65em auto, 100%;
+    width: 10rem;
+    max-width: 10rem;
+    margin: 15px 0.2em 0.2em 0;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
+    border-radius: 4px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+    linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: .65em auto, 100%;
 }
+
 select#sort_by::-ms-expand {
-	/*display: none;*/
+    /*display: none;*/
 }
+
 select#sort_by:hover {
-	outline: none;
-    border-color: dodgerblue;
-    box-shadow: 0 0 5px #719ECE;
-}
-select#sort_by:focus {
-	outline: none;
-    border-color: dodgerblue;
-    box-shadow: 0 0 5px #719ECE;
-	color: #222;
-}
-select#sort_by option {
-	font-weight:normal;
-}
-input#reverse:hover{
     outline: none;
     border-color: dodgerblue;
     box-shadow: 0 0 5px #719ECE;
 }
 
+select#sort_by:focus {
+    outline: none;
+    border-color: dodgerblue;
+    box-shadow: 0 0 5px #719ECE;
+    color: #222;
+}
+
+select#sort_by option {
+    font-weight: normal;
+}
+
+input#reverse:hover {
+    outline: none;
+    border-color: dodgerblue;
+    box-shadow: 0 0 5px #719ECE;
+}
+
+/*USERS_LIST - TABLE*/
+
+.wrapper {
+    margin: 25px 0;
+    overflow: auto;
+    border-radius: 5px 5px 0 0;
+    border-top: 1px solid var(--blue);
+    border-bottom: 1px solid var(--blue);
+}
+
+.users-list {
+    border-collapse: collapse !important;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 45rem;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+.users-list thead tr {
+    background-color: var(--blue);
+    color: #ffffff;
+    text-align: center;
+}
+
+.users-list th,
+.users-list td {
+    padding: 12px 15px;
+}
+.users-list td{
+    text-align: center;
+}
+.users-list tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.users-list tbody tr:nth-of-type(even) {
+    background-color: var(--gray-100);
+}
+
+.users-list tbody tr:last-of-type {
+    border-bottom: 2px solid var(--blue);
+}
+
+.users-list tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.users-list tbody tr:hover {
+    /*font-weight: bold;*/
+    color: var(--blue);
+}
 /*width*/
 
 .w30 {
     width: 30rem;
 }
+
 .w35 {
     width: 35rem;
 }
+
 .w40 {
-    width:40rem;
+    width: 40rem;
 }
+
 .w50 {
     width: 50rem;
 }
-.w55{
+
+.w55 {
     width: 55rem;
 }
+
 .min-w0 {
     width: 2rem;
 }
+
 .w37 {
     width: 37rem;
 }
+
 /*height*/
 .h3 {
     height: 3rem;
 }
-.height_auto{
+
+.height_auto {
     height: auto;
 }
+
 .m-h5 {
     min-height: 5rem;
 }
 
 /*top-margin*/
-.tm10{
+
+.tm10 {
     margin: 10px auto auto auto;
 }
-.tm15{
+
+.tm15 {
     margin: 15px auto auto auto;
 }
-.tm15-comment{
+
+.tm100 {
+    margin: 120px auto auto auto;
+}
+
+.tm15-comment {
     margin: 15px 0 auto auto;
 }
 
@@ -489,12 +584,15 @@ input#reverse:hover{
 .td5 {
     margin: 5px auto;
 }
+
 .td10 {
     margin: 10px auto;
 }
+
 .td15 {
     margin: 15px auto;
 }
+
 .td02 {
     margin: 0 2px;
 }
@@ -508,9 +606,11 @@ input#reverse:hover{
 .mr10 {
     margin-right: 10px;
 }
+
 .mr5 {
     margin-right: 5px;
 }
+
 /*margin-bottom*/
 .mb5 {
     margin-bottom: 5px;
@@ -520,23 +620,29 @@ input#reverse:hover{
 .p3070 {
     padding: 30px 70px;
 }
+
 .pr0 {
     padding-right: 0;
 }
+
 /*float*/
 .float_left {
     float: left;
 }
+
 .float_right {
     float: right;
 }
+
 /*text align*/
 .ta-right {
     text-align: right;
 }
+
 .ta-left {
     text-align: left;
 }
+
 .ta-center {
     text-align: center;
 }

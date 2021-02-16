@@ -78,7 +78,10 @@ def get_questions(cursor, order_by, reverse) -> List:
 def get_latest_five_questions(cursor, order_by, reverse) -> List:
     query = """
                 WITH question_five AS (SELECT * FROM question ORDER BY submission_time DESC LIMIT 5)
-                SELECT * FROM question_five
+                SELECT q.*, u.username
+                FROM question_five q
+                JOIN users u
+                ON q.user_id = u.id
                 ORDER BY {} {};
                 """.format(order_by, reverse)
     value = {'order_by': order_by, 'reverse': reverse}
@@ -197,6 +200,20 @@ def get_password(cursor, username):
             """
     value = {'username': username}
     cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_users(cursor):
+    query = """
+            SELECT u.id, username, email_address, registration_date, reputation,
+            (SELECT COUNT(*) FROM answer WHERE answer.user_id = u.id) AS asks,
+            (SELECT COUNT(*) FROM comment WHERE comment.user_id = u.id) AS comments,
+            (SELECT COUNT(*) FROM question WHERE question.user_id = u.id) AS questions
+            FROM users u
+            GROUP BY u.id;
+            """
+    cursor.execute(query)
     return cursor.fetchall()
 
 

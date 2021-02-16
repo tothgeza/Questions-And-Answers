@@ -231,10 +231,9 @@ h3 {
 }
 
 .message {
-    min-height: 3rem;
+    min-height: 2rem;
     height: auto;
-    margin: 5px 5px 5px 5px;
-    padding: 5px;
+    margin: 5px 5px 5px 10px;
 }
 
 .hidden-overflow {

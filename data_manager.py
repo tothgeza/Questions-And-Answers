@@ -218,6 +218,58 @@ def get_all_users(cursor):
 
 
 @connection.connection_handler
+def get_a_user(cursor, user_id):
+    query = """
+            SELECT u.id, username, email_address, registration_date, reputation,
+            (SELECT COUNT(*) FROM answer WHERE answer.user_id = u.id) AS asks,
+            (SELECT COUNT(*) FROM comment WHERE comment.user_id = u.id) AS comments,
+            (SELECT COUNT(*) FROM question WHERE question.user_id = u.id) AS questions
+            FROM users u
+            WHERE u.id  = %(user_id)s 
+            GROUP BY u.id;
+            """
+    value = {'user_id': user_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_data_from_user(cursor, table, user_id):
+    query = """
+            SELECT *
+            FROM {}
+            WHERE user_id  = %(user_id)s; 
+            """.format(table)
+    values = {'user_id': user_id, 'table': table}
+    cursor.execute(query, values)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_answers_to_user(cursor, user_id):
+    query = """
+            SELECT question_id, message
+            FROM answer
+            WHERE user_id  = %(user_id)s 
+            """
+    value = {'user_id': user_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comment_to_user(cursor, user_id):
+    query = """
+            SELECT question_id, message
+            FROM comment
+            WHERE user_id  = %(user_id)s AND question_id IS NOT NULL
+            """
+    value = {'user_id': user_id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def search_in_questions(cursor, search_phrase):
     query = """
                 SELECT * FROM question

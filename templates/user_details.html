@@ -1,0 +1,108 @@
+{% extends "layer.html" %}
+{% block title %}User details{% endblock %}
+{% block body %}
+    <div class="tm100 w55">
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">home</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('users_list') }}">people</a>
+    </div>
+    <section class="main-frame">
+        <div class="card w55 td20 wrapper">
+            <table class="users-list">
+                <thead>
+                <tr>
+                    <th id="user_id">User ID</th>
+                    <th>Username</th>
+                    <th id="email">Email</th>
+                    <th>Registration date</th>
+                    <th id="reputation">Reputation</th>
+                    <th id="counter">Count of asked</th>
+                    <th id="counter">Count of answers</th>
+                    <th id="counter">Count of comments</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email_address }}</td>
+                    <td>{{ user.registration_date.strftime("%d-%m-%Y") }}</td>
+                    <td>{{ user.reputation }}</td>
+                    <td>{{ user.asks }}</td>
+                    <td>{{ user.comments }}</td>
+                    <td>{{ user.questions }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card w55 td20 wrapper">
+            <table class="users-list question">
+                <thead>
+                <tr>
+                    <th id="date">Edited</th>
+                    <th id="title">Questions</th>
+                    <th id="link">Link</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <td>{{ question.submission_time.strftime("%d-%m-%Y") }}</td>
+                        <td>{{ question.title }}</td>
+                        <td class="links"><a href={{ url_for("display_question", question_id=question.id) }}>Check</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card w55 td20 wrapper">
+            <table class="users-list answer">
+                <thead>
+                <tr class="bg-answer-dark">
+                    <th id="date">Edited</th>
+                    <th id="title">Answers</th>
+                    <th id="link">Link</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for answer in answers %}
+                    <tr>
+                        <td>{{ answer.submission_time.strftime("%d-%m-%Y") }}</td>
+                        <td>{{ answer.message }}</td>
+                        <td class="links"><a href={{ url_for("display_question", question_id=answer.question_id) }}>Check</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card w55 td20 wrapper">
+            <table class="users-list comment">
+                <thead>
+                <tr>
+                    <th id="date">Edited</th>
+                    <th id="title">Comments</th>
+                    <th id="link">Link</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.submission_time.strftime("%d-%m-%Y") }}</td>
+                        <td>{{ comment.message }}</td>
+                        <td class="links">
+                            {% if comment.question_id != None %}
+                                <a href={{ url_for("display_question", question_id=comment.question_id) }}>Check</a>
+                            {% else %}
+                                <a href={{ url_for("route_to_question_from_answer", answer_id=comment.answer_id) }}>Check</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+{% endblock %}

@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
     <div class="tm100 w55">
-        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">arrow_back</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">home</a>
     </div>
     <section class="main-frame tm10">
         <div class="card w55 bg-question tm10 border wrapper">
@@ -12,18 +12,18 @@
                 <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Email</th>
+                    <th id="email">Email</th>
                     <th>Registration date</th>
-                    <th>Reputation</th>
-                    <th>Count of asked</th>
-                    <th>Count of answers</th>
-                    <th>Count of comments</th>
+                    <th id="reputation">Reputation</th>
+                    <th id="counter">Count of asked</th>
+                    <th id="counter">Count of answers</th>
+                    <th id="counter">Count of comments</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for user in users %}
                     <tr>
-                        <td>{{ user.username }}</td>
+                        <td class="name-field"><a href={{ url_for("user_details", user_id=user.id) }}>{{ user.username }}</a></td>
                         <td>{{ user.email_address }}</td>
                         <td>{{ user.registration_date.strftime("%d-%m-%Y") }}</td>
                         <td>{{ user.reputation }}</td>

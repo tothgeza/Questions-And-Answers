@@ -95,6 +95,26 @@ def users_list():
         return render_template("list_users.html", users=users)
 
 
+@app.route("/user/<user_id>")
+def user_details(user_id):
+    if 'username' not in session:
+        return redirect(url_for("main_page"))
+    else:
+        user = data_manager.get_a_user(user_id)[0]
+        answers = data_manager.get_data_from_user('answer', user_id)
+        comments = data_manager.get_data_from_user('comment', user_id)
+        questions = data_manager.get_data_from_user('question', user_id)
+        return render_template("user_details.html", user=user, answers=answers,
+                               comments=comments, questions=questions)
+
+
+@app.route("/answer/comment/<int:answer_id>/")
+def route_to_question_from_answer(answer_id):
+    question = data_manager.get_question_by_a_id(answer_id)[0]
+    print(question)
+    return redirect(url_for("display_question", question_id=question['id']))
+
+
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
     if '/question' not in request.referrer:

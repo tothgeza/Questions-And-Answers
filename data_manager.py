@@ -531,15 +531,15 @@ def add_comment_to_answer(cursor, message, answer_id, user_id):
     cursor.execute(query, value)
 
 
-@connection.connection_handler
-def make_question_vote(cursor, question_id, vote):
-    vote = 1 if vote == 'up' else -1
-    query = """
-                UPDATE question SET vote_number = vote_number + %(vote_direction)s
-                WHERE %(question_id)s=id;
-                """
-    value = {'question_id': question_id, 'vote_direction': vote}
-    cursor.execute(query, value)
+# @connection.connection_handler
+# def make_question_vote(cursor, question_id, vote):
+#     vote = 1 if vote == 'up' else -1
+#     query = """
+#                 UPDATE question SET vote_number = vote_number + %(vote_direction)s
+#                 WHERE %(question_id)s=id;
+#                 """
+#     value = {'question_id': question_id, 'vote_direction': vote}
+#     cursor.execute(query, value)
 
 
 @connection.connection_handler
@@ -600,14 +600,14 @@ def update_reputation(cursor, owner_id, rep_num):
 def delete_vote(cursor, column, id_num, user_id):
     query = """
             DELETE FROM votes
-            WHERE %(column)s = %(id_num)s AND user_id = %(user_id)s;
-            """
+            WHERE {} = %(id_num)s AND user_id = %(user_id)s;
+            """.format(column)
     values = {'column': column, 'id_num': id_num, 'user_id': user_id}
     cursor.execute(query, values)
 
 
 @connection.connection_handler
-def save_vote(cursor, column, column_id, user_id, value):
+def create_vote(cursor, column, column_id, user_id, value):
     query = """
             INSERT INTO votes ({}, user_id, updown )
             VALUES (%(column_id)s, %(user_id)s, %(value)s)
@@ -626,3 +626,15 @@ def path_to_image(file_name):
 
 def delete_unused_image(file_name):
     connection.delete_image(file_name)
+
+
+@connection.connection_handler
+def check_vote_question(cursor, quest_id, user_id):
+    query = """
+            SELECT *
+            FROM votes
+            WHERE  question_id = %(quest_id)s AND user_id = %(user_id)s;
+            """
+    values = {'quest_id': quest_id, 'user_id': user_id}
+    cursor.execute(query, values)
+    return cursor.fetchall()

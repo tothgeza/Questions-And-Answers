@@ -134,7 +134,9 @@ ALTER TABLE ONLY answer
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'blabla@blabla.com', '2021-02-15 09:43:00', 50, '$2b$12$GSe0MVPaocELPfqge517ze0c8X5Csm1jklkMdKnfkVpxgi71/8Yl6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'blabla@blabla.com', '2021-02-15 09:43:00', 50, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 09:43:00', 20, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lili', 'lili@blabla.com', '2021-02-18 09:43:00', 40, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL,1);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 

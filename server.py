@@ -325,13 +325,48 @@ def delete_comment(comment_id):
 
 @app.route("/question/<int:question_id>/vote_up")
 def question_vote_up(question_id):
-    data_manager.make_question_vote(question_id, 'up')
+    owner_id = data_manager.get_question_by_id(question_id)[0]['user_id']
+    if 'id' in session and session['id'] != owner_id:
+        if not data_manager.check_vote_question(question_id, session['id']):
+            # vote up blue->green
+            data_manager.update_vote_to_question(question_id, 1)
+            data_manager.update_reputation(owner_id, 5)
+            data_manager.create_vote('question_id', question_id, session['id'], True)
+        elif data_manager.check_vote_question(question_id, session['id'])[0]['updown']:
+            # vote up green->blue
+            data_manager.update_vote_to_question(question_id, -1)
+            data_manager.update_reputation(owner_id, -5)
+            data_manager.delete_vote('question_id', question_id, session['id'])
+        elif not data_manager.check_vote_question(question_id, session['id'])[0]['updown']:
+            # vote down red->blue vote up blue->green
+            data_manager.update_vote_to_question(question_id, 2)
+            data_manager.update_reputation(owner_id, 7)
+            data_manager.delete_vote('question_id', question_id, session['id'])
+            data_manager.create_vote('question_id', question_id, session['id'], True)
     return redirect(request.referrer)
 
 
 @app.route("/question/<int:question_id>/vote_down")
 def question_vote_down(question_id):
-    data_manager.make_question_vote(question_id, 'down')
+    owner_id = data_manager.get_question_by_id(question_id)[0]['user_id']
+    if 'id' in session and session['id'] != owner_id:
+        if not data_manager.check_vote_question(question_id, session['id']):
+            # vote up blue->red
+            data_manager.update_vote_to_question(question_id, -1)
+            data_manager.update_reputation(owner_id, -2)
+            data_manager.create_vote('question_id', question_id, session['id'], False)
+        elif data_manager.check_vote_question(question_id, session['id'])[0]['updown']:
+            # vote up green->blue down blue->red
+            data_manager.update_vote_to_question(question_id, -2)
+            data_manager.update_reputation(owner_id, -7)
+            data_manager.delete_vote('question_id', question_id, session['id'])
+            data_manager.create_vote('question_id', question_id, session['id'], False)
+        elif not data_manager.check_vote_question(question_id, session['id'])[0]['updown']:
+            # vote down red->blue
+            data_manager.update_vote_to_question(question_id, 1)
+            data_manager.update_reputation(owner_id, 2)
+            data_manager.delete_vote('question_id', question_id, session['id'])
+
     return redirect(request.referrer)
 
 

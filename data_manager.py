@@ -586,6 +586,17 @@ def update_vote_to_question(cursor, question_id, vote_num):
 
 
 @connection.connection_handler
+def update_vote_to_answer(cursor, answer_id, vote_num):
+    query = """
+            UPDATE answer
+            SET vote_number = vote_number + %(vote_num)s
+            WHERE id = %(answer_id)s;
+            """
+    values = {'vote_num': vote_num, 'answer_id': answer_id}
+    cursor.execute(query, values)
+
+
+@connection.connection_handler
 def update_reputation(cursor, owner_id, rep_num):
     query = """
             UPDATE users
@@ -629,12 +640,12 @@ def delete_unused_image(file_name):
 
 
 @connection.connection_handler
-def check_vote_question(cursor, quest_id, user_id):
+def check_vote_updown(cursor, column, column_id, user_id):
     query = """
             SELECT *
             FROM votes
-            WHERE  question_id = %(quest_id)s AND user_id = %(user_id)s;
-            """
-    values = {'quest_id': quest_id, 'user_id': user_id}
+            WHERE {} = %(column_id)s AND user_id = %(column_id)s;
+            """.format(column)
+    values = {'column_id': column_id, 'user_id': user_id}
     cursor.execute(query, values)
     return cursor.fetchall()

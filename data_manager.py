@@ -295,62 +295,6 @@ def get_question_owners(cursor):
 
 
 @connection.connection_handler
-def get_answer_owners(cursor, question_id):
-    query = """
-            SELECT answer.id, users.username AS name
-            FROM answer
-            JOIN users
-            ON answer.user_id = users.id
-            WHERE answer.question_id = %(question_id)s;
-            """
-    value = {'question_id': question_id}
-    cursor.execute(query, value)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_comment_owners_to_question(cursor, question_id):
-    query = """
-            SELECT comment.id, users.username AS name
-            FROM comment
-            JOIN users
-            ON comment.user_id = users.id
-            WHERE comment.question_id = %(question_id)s;
-            """
-    value = {'question_id': question_id}
-    cursor.execute(query, value)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_question_owner(cursor, question_id):
-    query = """
-            SELECT users.username AS name
-            FROM question
-            JOIN users
-            ON question.user_id = users.id
-            WHERE question.id = %(question_id)s
-            """
-    value = {'question_id': question_id}
-    cursor.execute(query, value)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_answer_owner(cursor, answer_id):
-    query = """
-            SELECT users.username AS name
-            FROM answer
-            JOIN users
-            ON answer.user_id = users.id
-            WHERE answer.id = %(answer_id)s;
-            """
-    value = {'answer_id': answer_id}
-    cursor.execute(query, value)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
 def search_in_answers(cursor, search_phrase):
     query = """
                 SELECT * FROM answer
@@ -628,6 +572,48 @@ def increase_display_count(cursor, question_id):
             """
     value = {'question_id': question_id}
     cursor.execute(query, value)
+
+
+@connection.connection_handler
+def update_vote_to_question(cursor, question_id, vote_num):
+    query = """
+            UPDATE question
+            SET vote_number = vote_number + %(vote_num)s
+            WHERE id = %(question_id)s;
+            """
+    values = {'vote_num': vote_num, 'question_id': question_id}
+    cursor.execute(query, values)
+
+
+@connection.connection_handler
+def update_reputation(cursor, owner_id, rep_num):
+    query = """
+            UPDATE users
+            SET reputation = reputation + %(rep_num)s
+            WHERE id = %(owner_id)s;
+            """
+    values = {'rep_num': rep_num, 'owner_id': owner_id}
+    cursor.execute(query, values)
+
+
+@connection.connection_handler
+def delete_vote(cursor, column, id_num, user_id):
+    query = """
+            DELETE FROM votes
+            WHERE %(column)s = %(id_num)s AND user_id = %(user_id)s;
+            """
+    values = {'column': column, 'id_num': id_num, 'user_id': user_id}
+    cursor.execute(query, values)
+
+
+@connection.connection_handler
+def save_vote(cursor, column, column_id, user_id, value):
+    query = """
+            INSERT INTO votes ({}, user_id, updown )
+            VALUES (%(column_id)s, %(user_id)s, %(value)s)
+            """.format(column)
+    values = {'column_id': column_id, 'user_id': user_id, 'value': value}
+    cursor.execute(query, values)
 
 
 def check_file_exists(value):

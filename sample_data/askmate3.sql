@@ -51,6 +51,14 @@ CREATE TABLE comment (
     user_id integer NOT NULL
 );
 
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    question_id integer,
+    answer_id integer,
+    user_id integer NOT NULL,
+    updown boolean
+);
+
 DROP TABLE IF EXISTS public.users CASCADE;
 CREATE TABLE users (
     id serial NOT NULL,
@@ -91,6 +99,16 @@ ALTER TABLE ONLY tag
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT pk_users_id PRIMARY KEY (id);
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE;
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE;
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
 
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE;

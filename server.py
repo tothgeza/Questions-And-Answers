@@ -172,7 +172,6 @@ def add_comment_to_answer(answer_id):
         if request.method == "GET":
             answer = data_manager.get_an_answer(answer_id)[0]
             question = data_manager.get_question_by_a_id(answer_id)
-            # answer_owner = data_manager.get_answer_owner(answer['id'])[0]
             return render_template('acomment.html', answer=answer,
                                    question=question[0])
         else:

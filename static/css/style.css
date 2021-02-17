@@ -19,6 +19,7 @@
     --light-green: #f1faef;
     --light-blue: #ecf7ff;
     --light-orange: #fdf7ea;
+    --orange:#ae7128;
 }
 
 body,
@@ -226,6 +227,21 @@ h3 {
     background-color: var(--gray-300);
     border-radius: 4px;
 }
+
+
+.title-tag{
+    text-align: left;
+    height: 2rem;
+    margin: 15px 5px 0 10px;
+    font-size: 1.2em;
+    color: var(--orange);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 
 /*vote*/
 .flex-vote a {

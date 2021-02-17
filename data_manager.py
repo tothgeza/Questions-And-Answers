@@ -649,3 +649,16 @@ def check_vote_updown(cursor, column, column_id, user_id):
     values = {'column_id': column_id, 'user_id': user_id}
     cursor.execute(query, values)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_tags_with_question_counter(cursor):
+    query = """
+                SELECT tag.name, COUNT(question_tag.question_id)
+                FROM tag
+                JOIN question_tag
+                ON tag.id = question_tag.tag_id
+                GROUP BY tag.name;
+                """
+    cursor.execute(query)
+    return cursor.fetchall()

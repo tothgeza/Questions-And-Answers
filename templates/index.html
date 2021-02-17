@@ -21,6 +21,8 @@
     </div>
     <div class="tm10 w55">
         <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">home</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('add_question') }}">post_add</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}">label</a>
         {% if 'username' in session %}
             <a class="material-icons md-24 icon-nav" href="{{ url_for('add_question') }}">post_add</a>
             <p class="float_right">{{ session['username'] }} logged in</p>

@@ -20,9 +20,15 @@ def file_exist_filter(value):
 def main_page():
     questions = data_manager.get_latest_five_questions('submission_time', 'DESC')
     tag_names = data_manager.get_tags_to_question_id()
+    if 'id' in session:
+        votes_up = data_manager.get_votes_by_user_id('question_id', session['id'], 'True')
+        votes_down = data_manager.get_votes_by_user_id('question_id', session['id'], 'False')
+    else:
+        votes_up = None
+        votes_down = None
     return render_template('main_page.html', headers=data_manager.QUESTION_HEADER,
                            questions=questions, title=data_manager.TITLE_HEADER,
-                           tag_names=tag_names)
+                           tag_names=tag_names, votes_up=votes_up, votes_down=votes_down)
 
 
 @app.route("/list")
@@ -31,9 +37,16 @@ def hello():
     is_reversed = 'DESC' if request.args.get('reverse') else 'ASC'
     tag_names = data_manager.get_tags_to_question_id()
     questions = data_manager.get_questions(order_by, is_reversed)
+    if 'id' in session:
+        votes_up = data_manager.get_votes_by_user_id('question_id', session['id'], 'True')
+        votes_down = data_manager.get_votes_by_user_id('question_id', session['id'], 'False')
+    else:
+        votes_up = None
+        votes_down = None
     return render_template('index.html', headers=data_manager.QUESTION_HEADER,
                            questions=questions, title=data_manager.TITLE_HEADER,
-                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names)
+                           order_by=order_by, is_reversed=is_reversed, tag_names=tag_names,
+                           votes_up=votes_up, votes_down=votes_down)
 
 
 @app.route("/registration", methods=['GET', 'POST'])
@@ -124,11 +137,23 @@ def display_question(question_id):
     answers = data_manager.get_answers_by_question_id(question_id)
     qcomments_list = data_manager.get_question_comments_with_username(question_id)
     acomments_list = data_manager.get_answers_comments_with_username(question_id)
+    if 'id' in session:
+        votes_up = data_manager.get_votes_by_user_id('question_id', session['id'], 'True')
+        votes_down = data_manager.get_votes_by_user_id('question_id', session['id'], 'False')
+        answer_up = data_manager.get_votes_by_user_id('answer_id', session['id'], 'True')
+        answer_down = data_manager.get_votes_by_user_id('answer_id', session['id'], 'False')
+    else:
+        votes_up = None
+        votes_down = None
+        answer_up = None
+        answer_down = None
     return render_template('question.html', headers=data_manager.ANSWER_HEADER,
                            question=question[0], answers=answers,
                            qcomments=qcomments_list,
                            acomments=acomments_list,
-                           tag_names=tag_names)
+                           tag_names=tag_names, votes_up=votes_up,
+                           votes_down=votes_down,
+                           answer_up=answer_up, answer_down=answer_down)
 
 
 @app.route("/question/<int:question_id>/new-tag", methods=['GET', 'POST'])

@@ -16,7 +16,8 @@
         <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}">view_list</a>
         {% if 'username' in session %}
             <a class="material-icons md-24 icon-nav" href="{{ url_for('users_list') }}">people</a>
-            <a class="material-icons md-24 icon-nav" href="{{ url_for('user_details', user_id=session['id']) }}">person</a>
+            <a class="material-icons md-24 icon-nav"
+               href="{{ url_for('user_details', user_id=session['id']) }}">person</a>
             <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}">label</a>
             <p class="float_right">{{ session['username'] }} logged in</p>
             <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
@@ -30,16 +31,26 @@
             <div class="card w55 tm15 bg-question">
                 <div class="flex-container">
                     <div class="flex-vote">
-                        <a class="material-icons icon-vote"
-                                {% if 'username' in session %}
-                           href="{{ url_for('question_vote_up', question_id=quest.id) }}"
-                                {% endif %}
+                        {% if 'id' in session %}
+                            {% if quest.id in votes_up %}
+                                <a class="material-icons icon-vote green"
+                                   href="{{ url_for('question_vote_up', question_id=quest.id) }}"
+                            {% else %}
+                                <a class="material-icons icon-vote"
+                                   href="{{ url_for('question_vote_up', question_id=quest.id) }}"
+                            {% endif %}
+                        {% endif %}
                         >thumb_up</a>
                         <div class="vote-string">{{ quest[headers[3]] }}</div>
-                        <a class="material-icons icon-vote"
-                                {% if 'username' in session %}
-                           href="{{ url_for('question_vote_down', question_id=quest.id) }}"
-                                {% endif %}
+                        {% if 'id' in session %}
+                            {% if quest.id in votes_down %}
+                                <a class="material-icons icon-vote red"
+                                   href="{{ url_for('question_vote_down', question_id=quest.id) }}"
+                            {% else %}
+                                <a class="material-icons icon-vote"
+                                   href="{{ url_for('question_vote_down', question_id=quest.id) }}"
+                            {% endif %}
+                        {% endif %}
                         >thumb_down</a>
                     </div>
                     <div class="flex-message w40">

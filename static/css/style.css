@@ -179,8 +179,8 @@ h3 {
     color: green;
     position: relative;
     left: 15px;
-
 }
+
 /*flex*/
 .flex-container {
     display: flex;
@@ -810,4 +810,10 @@ input#reverse:hover {
 }
 .fs-11 {
     font-size: 1.1em;
+}
+.red{
+    color: red;
+}
+.green {
+    color: green;
 }

@@ -90,6 +90,22 @@ def get_latest_five_questions(cursor, order_by, reverse) -> List:
 
 
 @connection.connection_handler
+def get_votes_by_user_id(cursor, column, user_id, voted):
+    query = """
+                SELECT *
+                FROM votes
+                WHERE user_id = %(user_id)s AND updown = %(voted)s;
+                """
+    values = {'user_id': user_id, 'voted': voted}
+    cursor.execute(query, values)
+    list_original = cursor.fetchall()
+    new_list = []
+    for element in list_original:
+        new_list.append(element[column])
+    return new_list
+
+
+@connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
     query = """
                 SELECT a.*, u.username, u.reputation

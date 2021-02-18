@@ -644,7 +644,7 @@ def check_vote_updown(cursor, column, column_id, user_id):
     query = """
             SELECT *
             FROM votes
-            WHERE {} = %(column_id)s AND user_id = %(column_id)s;
+            WHERE {} = %(column_id)s AND user_id = %(user_id)s;
             """.format(column)
     values = {'column_id': column_id, 'user_id': user_id}
     cursor.execute(query, values)

@@ -656,7 +656,7 @@ def get_tags_with_question_counter(cursor):
     query = """
                 SELECT tag.name, COUNT(question_tag.question_id)
                 FROM tag
-                JOIN question_tag
+                LEFT OUTER JOIN question_tag
                 ON tag.id = question_tag.tag_id
                 GROUP BY tag.name;
                 """

@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
     <div class="tm10 w55">
-        <a class="material-icons icon-nav " href="{{ url_for('hello') }}">arrow_back</a>
+        <a class="material-icons icon-nav " href="{{ url_for('main_page') }}">home</a>
         {% if 'username' in session %}
             <p class="float_right">{{ session['username'] }} logged in</p>
             <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
@@ -76,6 +76,11 @@
                        class="material-icons icon-edit td5">sell</a>
                     <a href="{{ url_for('delete_question', question_id=question.id) }}"
                        class="material-icons icon-edit td5">delete</a>
+                {% elif  'username' in session %}
+                    <a href="{{ url_for('add_answer', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">note_add</a>
+                    <a href="{{ url_for('add_comment_to_question', question_id=question.id) }}"
+                       class="material-icons icon-edit td5">insert_comment</a>
                 {% endif %}
             </div>
         </div>
@@ -170,6 +175,9 @@
                    class="material-icons icon-edit td5">insert_comment</a>
                 <a href="{{ url_for('delete_answer', answer_id=answer.id) }}"
                    class="material-icons icon-edit td5">delete</a>
+            {% elif  'username' in session %}
+                <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
+                   class="material-icons icon-edit td5">insert_comment</a>
             {% endif %}
         </div>
     </div>

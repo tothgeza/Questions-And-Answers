@@ -19,7 +19,7 @@
     --light-green: #f1faef;
     --light-blue: #ecf7ff;
     --light-orange: #fdf7ea;
-    --orange:#ae7128;
+    --orange:#e4a316;
 }
 
 body,
@@ -126,7 +126,9 @@ h3 {
 .bg-tag {
     background-color: var(--light-orange);
 }
-
+.bg-tag-dark {
+    background-color: var(--orange);
+}
 .bg-form {
     background-color: var(--gray-200);
 }
@@ -513,7 +515,7 @@ input#reverse:hover {
 /*USERS_LIST - TABLE*/
 
 .wrapper {
-    margin: 25px 0;
+    /*margin: 25px 0;*/
     overflow: auto;
     border-radius: 5px 5px 0 0;
     /*border-top: 1px solid var(--blue);*/
@@ -535,7 +537,9 @@ input#reverse:hover {
     color: #ffffff;
     text-align: center;
 }
-
+.tag {
+    min-width: 30rem;
+}
 .question thead tr {
     background-color: var(--blue);
     color: #ffffff;
@@ -553,6 +557,11 @@ input#reverse:hover {
     color: #ffffff;
     text-align: center;
 }
+.tag thead tr {
+    background-color: var(--orange);
+    color: #ffffff;
+    text-align: center;
+}
 
 .users-list th,
 .users-list td {
@@ -562,7 +571,9 @@ input#reverse:hover {
 .users-list td {
     text-align: center;
 }
-
+.tag th {
+    text-align: center;
+}
 .users-list tbody tr {
     border-bottom: 1px solid #dddddd;
 }
@@ -602,7 +613,9 @@ input#reverse:hover {
 .comment tbody tr:last-of-type {
     border-bottom: 2px solid var(--gray);
 }
-
+.tag tbody tr:last-of-type {
+    border-bottom: 2px solid var(--orange);
+}
 .users-list tbody tr:hover {
     /*font-weight: bold;*/
     color: var(--blue);
@@ -708,6 +721,9 @@ input#reverse:hover {
 }
 
 /*top-bottom margin*/
+.m0 {
+    margin: 0 auto;
+}
 .td5 {
     margin: 5px auto;
 }
@@ -781,6 +797,9 @@ input#reverse:hover {
 }
 
 /*font-size*/
+.fs1 {
+    font-size: 1em;
+}
 .fs-11 {
     font-size: 1.1em;
 }

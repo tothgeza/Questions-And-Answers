@@ -1,15 +1,25 @@
 {% extends "layer.html" %}
 {% block title %}Tags{% endblock %}
 {% block body %}
-    <div class="tm10 w55">
+    <div class="tm100 w30">
         <a class="material-icons icon-nav" href={{ request.referrer }}>arrow_back</a>
     </div>
-    <div class="card w55 tm15 bg-tag">
-        <div class="flex-message w40">
-            <div class="title-tag">Tags</div>
-        {% for tag in tags %}
-            <div><label class="tag-label" for="">{{ tag.name }}({{ tag.count }})</label></div>
-        {% endfor %}
-        </div>
+    <div class="card w30 td20 wrapper">
+        <table class="users-list tag">
+            <thead>
+            <tr class="bg-tag-dark">
+                <th>Tags</th>
+                <th>Used</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td><label class="tag-label fs1 m0" for="">{{ tag.name }}</label></td>
+                    <td>{{ tag.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

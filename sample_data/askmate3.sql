@@ -155,26 +155,37 @@ booklet
 app.js (bundled file with webpack, including jquery)', 'images/image1.png', 1);
 INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL, 1);
-SELECT pg_catalog.setval('question_id_seq', 2, true);
+INSERT INTO public.question (id, submission_time, view_number, vote_number, title, message, image, user_id) VALUES (3, '2021-02-18 11:04:02.000000', 13, 2, 'Miből készül a kenyér héja?', 'Szeretnék otthon sütni kenyeret,találtam is pár receptet de egyik sem írja a héját.Az miből készül?Persze gondoltam arra is, hogy csak a "belét"csinálom meg, a gyerekek is azt szeretik, a héját nem eszik meg,de elősször hagyományosan akarom el készíteni.Ötletek?', 'kenyer.jpg', 2);
+SELECT pg_catalog.setval('question_id_seq', 3, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL, 1);
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg', 1);
-SELECT pg_catalog.setval('answer_id_seq', 2, true);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (1, '2017-04-28 16:49:00.000000', 4, 1, 'You need to use brackets: my_list = []', null, 1, false);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (2, '2017-04-25 14:42:00.000000', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg', 1, false);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (4, '2021-02-18 11:10:00.000000', 2, 3, 'A kenyér héja a réti héjából készül, a tollait ki kell tépkedni, majd a testét megforgatni lisztben, majd kemencében kisütni.', 'retiheja.jpg', 6, true);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (3, '2021-02-18 11:07:19.000000', -1, 3, 'én héj nélkül sütöm mindig.
 
-INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00', 0, 1);
-INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00', 0, 1);
-SELECT pg_catalog.setval('comment_id_seq', 2, true);
+amikor kihűlt felszeletelem, és a szeletek élét barna ételfestékkel alaposan megkenem...', 'default.png', 3, false);
+SELECT pg_catalog.setval('answer_id_seq', 4, true);
 
-INSERT INTO tag VALUES (1, 'python');
-INSERT INTO tag VALUES (2, 'sql');
-INSERT INTO tag VALUES (3, 'css');
-INSERT INTO tag VALUES (4, 'js');
-INSERT INTO tag VALUES (5, 'html');
-INSERT INTO tag VALUES (6, 'java');
-INSERT INTO tag VALUES (7, 'flask');
-INSERT INTO tag VALUES (8, 'jinja');
-SELECT pg_catalog.setval('tag_id_seq', 3, true);
+INSERT INTO public.comment (id, question_id, answer_id, message, submission_time, edited_count, user_id) VALUES (1, 0, null, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00.000000', 0, 1);
+INSERT INTO public.comment (id, question_id, answer_id, message, submission_time, edited_count, user_id) VALUES (2, null, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00.000000', 0, 1);
+INSERT INTO public.comment (id, question_id, answer_id, message, submission_time, edited_count, user_id) VALUES (3, 3, null, 'a kenyér héja? hogy miből készül? ', '2021-02-18 11:11:33.000000', null, 1);
+INSERT INTO public.comment (id, question_id, answer_id, message, submission_time, edited_count, user_id) VALUES (4, null, 4, 'Ha sütőben sütöm, hány fokra állítsam?', '2021-02-18 11:13:03.000000', null, 10);
+SELECT pg_catalog.setval('comment_id_seq', 4, true);
 
-INSERT INTO question_tag VALUES (0, 1);
-INSERT INTO question_tag VALUES (1, 3);
-INSERT INTO question_tag VALUES (2, 3);
+INSERT INTO public.tag (id, name) VALUES (1, 'python');
+INSERT INTO public.tag (id, name) VALUES (2, 'sql');
+INSERT INTO public.tag (id, name) VALUES (3, 'css');
+INSERT INTO public.tag (id, name) VALUES (4, 'kenyer');
+
+SELECT pg_catalog.setval('tag_id_seq', 4, true);
+
+INSERT INTO public.question_tag (question_id, tag_id) VALUES (0, 1);
+INSERT INTO public.question_tag (question_id, tag_id) VALUES (1, 3);
+INSERT INTO public.question_tag (question_id, tag_id) VALUES (2, 3);
+INSERT INTO public.question_tag (question_id, tag_id) VALUES (3, 4);
+
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 4, 2, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 10, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 4, 10, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 3, 10, false);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 10, true);

@@ -54,7 +54,7 @@
                                 {% if tag.question_id == quest.id %}
                                     <div class="tag-check">
                                         <label class="tag-label pr0 td02">{{ tag.name }}</label>
-                                        {% if 'username' in session %}
+                                        {% if 'username' in session and session['id'] == quest.user_id %}
                                             <a class="material-icons md-18 pos"
                                                href="{{ '/question/'+quest.id|string+'/tag/'+tag.id|string+'/delete' }}"
                                             >clear</a>

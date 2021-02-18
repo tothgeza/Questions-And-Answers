@@ -65,7 +65,7 @@
                 {% endif %}
             </div>
             <div class="flex-vote min-w0">
-                {% if 'username' in session %}
+                {% if 'username' in session  and session['id'] == question.user_id %}
                     <a href="{{ url_for('edit_question', question_id=question.id) }}"
                        class="material-icons icon-edit td5">edit</a>
                     <a href="{{ url_for('add_answer', question_id=question.id) }}"
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <div class="flex-vote min-w0">
-                        {% if 'username' in session %}
+                        {% if 'username' in session and session['id'] == comment.user_id %}
                             <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
                                class="material-icons icon-edit td5">edit</a>
                             <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"
@@ -163,7 +163,7 @@
             {% endif %}
         </div>
         <div class="flex-vote min-w0">
-            {% if 'username' in session %}
+            {% if 'username' in session and session['id'] == answer.user_id %}
                 <a href="{{ url_for('edit_answer', answer_id=answer.id) }}"
                    class="material-icons icon-edit td5">edit</a>
                 <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}"
@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="flex-vote min-w0">
-                                {% if 'username' in session %}
+                                {% if 'username' in session and session['id'] == comment.user_id %}
                                     <a href="{{ url_for('edit_comment', comment_id=comment.id) }}"
                                        class="material-icons icon-edit td5">edit</a>
                                     <a href="{{ url_for("delete_comment", comment_id=comment.id) }}"

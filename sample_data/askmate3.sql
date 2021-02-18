@@ -134,17 +134,17 @@ ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'tibor@blabla.com', '2021-02-15 09:43:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Luca', 'luca@blabla.com', '2021-02-12 09:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Luca', 'luca@blabla.com', '2021-02-12 09:40:00', 15, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 11:46:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lili', 'lili@blabla.com', '2021-02-16 09:44:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Laca', 'laca@blabla.com', '2021-01-18 08:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Anna', 'anna@blabla.com', '2021-01-11 09:28:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Laca', 'laca@blabla.com', '2021-01-18 08:40:00', -2, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Anna', 'anna@blabla.com', '2021-01-11 09:28:00', 35, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Norbi', 'norbi@blabla.com', '2021-01-10 09:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Kata', 'kata@blabla.com', '2021-01-08 08:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Misi', 'misi@blabla.com', '2021-01-14 08:43:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Emese', 'emese@blabla.com', '2021-01-13 07:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL,1);
-INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
+INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 0, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL,1);
+INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 0, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -153,17 +153,17 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)', 'images/image1.png', 1);
-INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
+INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 0, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL, 1);
-INSERT INTO public.question (id, submission_time, view_number, vote_number, title, message, image, user_id) VALUES (3, '2021-02-18 11:04:02.000000', 13, 2, 'Miből készül a kenyér héja?', 'Szeretnék otthon sütni kenyeret,találtam is pár receptet de egyik sem írja a héját.Az miből készül?Persze gondoltam arra is, hogy csak a "belét"csinálom meg, a gyerekek is azt szeretik, a héját nem eszik meg,de elősször hagyományosan akarom el készíteni.Ötletek?', 'kenyer.jpg', 2);
+INSERT INTO public.question (id, submission_time, view_number, vote_number, title, message, image, user_id) VALUES (3, '2021-02-18 11:04:02.000000', 13, 3, 'Miből készül a kenyér héja?', 'Szeretnék otthon sütni kenyeret,találtam is pár receptet de egyik sem írja a héját.Az miből készül?Persze gondoltam arra is, hogy csak a "belét"csinálom meg, a gyerekek is azt szeretik, a héját nem eszik meg,de elősször hagyományosan akarom el készíteni.Ötletek?', 'kenyer.jpg', 2);
 SELECT pg_catalog.setval('question_id_seq', 3, true);
 
-INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (1, '2017-04-28 16:49:00.000000', 4, 1, 'You need to use brackets: my_list = []', null, 1, false);
-INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (2, '2017-04-25 14:42:00.000000', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg', 1, false);
-INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (4, '2021-02-18 11:10:00.000000', 2, 3, 'A kenyér héja a réti héjából készül, a tollait ki kell tépkedni, majd a testét megforgatni lisztben, majd kemencében kisütni.', 'retiheja.jpg', 6, true);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (2, '2017-04-25 14:42:00.000000', 0, 1, 'Look it up in the Python docs', 'images/image2.jpg', 1, false);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (1, '2017-04-28 16:49:00.000000', 0, 1, 'You need to use brackets: my_list = []', null, 1, false);
 INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (3, '2021-02-18 11:07:19.000000', -1, 3, 'én héj nélkül sütöm mindig.
 
 amikor kihűlt felszeletelem, és a szeletek élét barna ételfestékkel alaposan megkenem...', 'default.png', 3, false);
+INSERT INTO public.answer (id, submission_time, vote_number, question_id, message, image, user_id, accepted) VALUES (4, '2021-02-18 11:10:00.000000', 2, 3, 'A kenyér héja a réti héjából készül, a tollait ki kell tépkedni, majd a testét megforgatni lisztben, majd kemencében kisütni.', 'retiheja.jpg', 6, true);
 SELECT pg_catalog.setval('answer_id_seq', 4, true);
 
 INSERT INTO public.comment (id, question_id, answer_id, message, submission_time, edited_count, user_id) VALUES (1, 0, null, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00.000000', 0, 1);
@@ -184,8 +184,9 @@ INSERT INTO public.question_tag (question_id, tag_id) VALUES (1, 3);
 INSERT INTO public.question_tag (question_id, tag_id) VALUES (2, 3);
 INSERT INTO public.question_tag (question_id, tag_id) VALUES (3, 4);
 
-INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 4, 2, true);
-INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 10, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 6, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 3, 6, false);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 3, true);
 INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 4, 10, true);
-INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 3, 10, false);
 INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (3, null, 10, true);
+INSERT INTO public.votes (question_id, answer_id, user_id, updown) VALUES (null, 4, 2, true);

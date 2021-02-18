@@ -1,6 +1,5 @@
 --
 -- PostgreSQL database dump
---
 
 -- Dumped from database version 9.5.6
 -- Dumped by pg_dump version 9.5.6
@@ -134,9 +133,16 @@ ALTER TABLE ONLY answer
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'blabla@blabla.com', '2021-02-15 09:43:00', 50, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 09:43:00', 20, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lili', 'lili@blabla.com', '2021-02-18 09:43:00', 40, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'tibor@blabla.com', '2021-02-15 09:43:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Luca', 'luca@blabla.com', '2021-02-12 09:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 11:46:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lili', 'lili@blabla.com', '2021-02-16 09:44:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Laca', 'laca@blabla.com', '2021-01-18 08:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Anna', 'anna@blabla.com', '2021-01-11 09:28:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Norbi', 'norbi@blabla.com', '2021-01-10 09:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Kata', 'kata@blabla.com', '2021-01-08 08:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Misi', 'misi@blabla.com', '2021-01-14 08:43:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Emese', 'emese@blabla.com', '2021-01-13 07:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL,1);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
@@ -162,6 +168,11 @@ SELECT pg_catalog.setval('comment_id_seq', 2, true);
 INSERT INTO tag VALUES (1, 'python');
 INSERT INTO tag VALUES (2, 'sql');
 INSERT INTO tag VALUES (3, 'css');
+INSERT INTO tag VALUES (4, 'js');
+INSERT INTO tag VALUES (5, 'html');
+INSERT INTO tag VALUES (6, 'java');
+INSERT INTO tag VALUES (7, 'flask');
+INSERT INTO tag VALUES (8, 'jinja');
 SELECT pg_catalog.setval('tag_id_seq', 3, true);
 
 INSERT INTO question_tag VALUES (0, 1);

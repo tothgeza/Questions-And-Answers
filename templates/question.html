@@ -46,14 +46,20 @@
                 </div>
                 <div>
                     <p class="float_right comment">
-                        <small>Asked</small> {{ question.username }}</p>
+                        <small>Asked at</small>
+                        {{ question['submission_time'].strftime("%B %d '%y") }}
+                    </p>
                 </div>
                 <div class="view-date">
                     <div class="view">
                         <small>{{ question['view_number'] }} views</small>
                     </div>
                     <div class="comment">
-                        <div class="date"><small>{{ question['submission_time'].strftime("%B %d '%y") }}</small></div>
+                        <div class="date">
+                            <small>by</small>
+                            {{ question.username }}
+                            <label class="rep-label" for="">{{ question.reputation }}</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,13 +101,18 @@
                         </div>
                         <div>
                             <p class="float_right comment mr10">
-                                <small>Commented</small> {{ comment['username'] }}</p>
+                                <small>Commented at</small>
+                                {{ comment['submission_time'].strftime("%B %d '%y") }}
+                            </p>
                         </div>
                         <div class="view-date">
                             <div class="view ml15">
                                 <small>{{ comment['edited_count'] }} edited</small></div>
                             <div class="comment">
-                                <div class="view"><small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small>
+                                <div class="view">
+                                    <small>by</small>
+                                    {{ comment['username'] }}
+                                    <label class="rep-label" for="">{{ comment.reputation }}</label>
                                 </div>
                             </div>
                         </div>
@@ -151,13 +162,17 @@
             </div>
             <div>
                 <p class="float_right comment">
-                    <small>Answered</small>
-                    {{ answer.username }}
+                    <small>Answered at</small>
+                    {{ answer[headers[1]].strftime("%B %d '%y") }}
                 </p>
             </div>
             <div class="view-date">
                 <div class="view"></div>
-                <div class="comment"><small>{{ answer[headers[1]].strftime("%B %d '%y") }}</small></div>
+                <div class="comment">
+                    <small>by</small>
+                    {{ answer.username }}
+                    <label class="rep-label" for="">{{ answer.reputation }}</label>
+                </div>
             </div>
         </div>
         <div class="flex-image">
@@ -193,13 +208,18 @@
                                 </div>
                                 <div>
                                     <p class="float_right comment mr10">
-                                        <small>Commented</small> {{ comment['username'] }}</p>
+                                        <small>Commented at</small>
+                                        {{ comment['submission_time'].strftime("%B %d '%y") }}
+                                    </p>
                                 </div>
                                 <div class="view-date ml15">
                                     <div class="view"><small>{{ comment['edited_count'] }} edited</small></div>
                                     <div class="comment">
                                         <div class="view">
-                                            <small>{{ comment['submission_time'].strftime("%B %d '%y") }}</small></div>
+                                            <small>by</small>
+                                            {{ comment['username'] }}
+                                            <label class="rep-label" for="">{{ comment.reputation }}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

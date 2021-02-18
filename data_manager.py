@@ -63,7 +63,7 @@ def get_tag_that_not_in_question(cursor, question_id):
 @connection.connection_handler
 def get_questions(cursor, order_by, reverse) -> List:
     query = """
-                SELECT q.*, u.username
+                SELECT q.*, u.username, u.reputation
                 FROM question q
                 JOIN users u 
                 ON q.user_id = u.id
@@ -78,7 +78,7 @@ def get_questions(cursor, order_by, reverse) -> List:
 def get_latest_five_questions(cursor, order_by, reverse) -> List:
     query = """
                 WITH question_five AS (SELECT * FROM question ORDER BY submission_time DESC LIMIT 5)
-                SELECT q.*, u.username
+                SELECT q.*, u.username, u.reputation
                 FROM question_five q
                 JOIN users u
                 ON q.user_id = u.id
@@ -92,7 +92,7 @@ def get_latest_five_questions(cursor, order_by, reverse) -> List:
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
     query = """
-                SELECT a.*, u.username
+                SELECT a.*, u.username, u.reputation
                 FROM answer a
                 JOIN users u
                 ON a.user_id = u.id
@@ -121,7 +121,7 @@ def get_an_answer(cursor, answer_id):
 @connection.connection_handler
 def get_question_by_id(cursor, question_id):
     query = """
-                SELECT q.*, u.username
+                SELECT q.*, u.username, u.reputation
                 FROM question q
                 JOIN users u 
                 ON q.user_id = u.id
@@ -135,7 +135,7 @@ def get_question_by_id(cursor, question_id):
 @connection.connection_handler
 def get_question_comments_with_username(cursor, question_id):
     query = """
-                SELECT c.*, u.username FROM comment c
+                SELECT c.*, u.username, u.reputation FROM comment c
                 JOIN users u
                 ON c.user_id = u.id
                 WHERE question_id = %(question_id)s
@@ -161,7 +161,7 @@ def get_comments_by_id(cursor, comment_id):
 @connection.connection_handler
 def get_answers_comments_with_username(cursor, question_id):
     query = """
-                SELECT c.*, u.username 
+                SELECT c.*, u.username, u.reputation
                 FROM comment c
                 JOIN users u
                 ON c.user_id = u.id

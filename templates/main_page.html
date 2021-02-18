@@ -64,8 +64,9 @@
                             {% endfor %}
                         </div>
                         <div>
-                            <p class="float_right comment"><small>Asked</small>
-                                {{ quest.username }}
+                            <p class="float_right comment">
+                                <small>Asked at</small>
+                                {{ quest[headers[1]].strftime("%B %d '%y") }}
                             </p>
                         </div>
                         <div class="view-date">
@@ -73,7 +74,11 @@
                                 <small>{{ quest[headers[2]] }} views</small>
                             </div>
                             <div class="comment">
-                                <div class="date"><small>{{ quest[headers[1]].strftime("%B %d '%y") }}</small></div>
+                                <div class="date">
+                                    <small>by</small>
+                                    {{ quest.username }}
+                                    <label class="rep-label" for="">{{ quest.reputation }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>

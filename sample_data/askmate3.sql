@@ -135,9 +135,9 @@ ALTER TABLE ONLY comment
 
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Tibor', 'tibor@blabla.com', '2021-02-15 09:43:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Luca', 'luca@blabla.com', '2021-02-12 09:40:00', 15, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 11:46:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lala', 'lala@blabla.com', '2021-01-15 11:46:00', -2, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Lili', 'lili@blabla.com', '2021-02-16 09:44:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
-INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Laca', 'laca@blabla.com', '2021-01-18 08:40:00', -2, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Laca', 'laca@blabla.com', '2021-01-18 08:40:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Anna', 'anna@blabla.com', '2021-01-11 09:28:00', 35, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Norbi', 'norbi@blabla.com', '2021-01-10 09:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');
 INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('Kata', 'kata@blabla.com', '2021-01-08 08:22:00', 0, '$2b$12$.dg5TJl7qIJ0pIJbvWIdiu8M5UpBjnNrus7.Fun6994STU6mdV9u6');

@@ -23,6 +23,8 @@
                         <a class="material-icons icon-vote"
                            href="{{ url_for('question_vote_up', question_id=question.id) }}"
                     {% endif %}
+                {% else %}
+                    <a class="material-icons icon-vote"
                 {% endif %}
                 >thumb_up</a>
                 <div class="vote-string">{{ question.vote_number }}</div>
@@ -34,6 +36,8 @@
                         <a class="material-icons icon-vote"
                            href="{{ url_for('question_vote_down', question_id=question.id) }}"
                     {% endif %}
+                {% else %}
+                    <a class="material-icons icon-vote"
                 {% endif %}
                 >thumb_down</a>
             </div>
@@ -162,6 +166,8 @@
                     <a class="material-icons icon-vote"
                        href="{{ url_for('answer_vote_up', answer_id=answer.id) }}"
                 {% endif %}
+            {% else %}
+                <a class="material-icons icon-vote"
             {% endif %}
             >thumb_up</a>
             <div class="vote-string">{{ answer[headers[2]] }}</div>
@@ -173,6 +179,8 @@
                     <a class="material-icons icon-vote"
                        href="{{ url_for('answer_vote_down', answer_id=answer.id) }}"
                 {% endif %}
+            {% else %}
+                <a class="material-icons icon-vote"
             {% endif %}
             >thumb_down</a>
         </div>

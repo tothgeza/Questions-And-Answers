@@ -39,6 +39,9 @@
                                 <a class="material-icons icon-vote"
                                    href="{{ url_for('question_vote_up', question_id=quest.id) }}"
                             {% endif %}
+                        {% else %}
+                            <a class="material-icons icon-vote"
+
                         {% endif %}
                         >thumb_up</a>
                         <div class="vote-string">{{ quest[headers[3]] }}</div>
@@ -50,6 +53,8 @@
                                 <a class="material-icons icon-vote"
                                    href="{{ url_for('question_vote_down', question_id=quest.id) }}"
                             {% endif %}
+                        {% else %}
+                            <a class="material-icons icon-vote"
                         {% endif %}
                         >thumb_down</a>
                     </div>

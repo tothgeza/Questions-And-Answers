@@ -13,12 +13,12 @@
         </form>
     </div>
     <div class="tm10 w55">
-        <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}">view_list</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('hello') }}" title="List View">view_list</a>
         {% if 'username' in session %}
-            <a class="material-icons md-24 icon-nav" href="{{ url_for('users_list') }}">people</a>
+            <a class="material-icons md-24 icon-nav" href="{{ url_for('users_list') }}" title="Users">people</a>
             <a class="material-icons md-24 icon-nav"
-               href="{{ url_for('user_details', user_id=session['id']) }}">person</a>
-            <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}">label</a>
+               href="{{ url_for('user_details', user_id=session['id']) }}" title="User">person</a>
+            <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}" title="Tags">label</a>
             <p class="float_right">{{ session['username'] }} logged in</p>
             <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
         {% else %}

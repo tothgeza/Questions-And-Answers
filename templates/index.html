@@ -20,10 +20,10 @@
         </form>
     </div>
     <div class="tm10 w55">
-        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}">home</a>
+        <a class="material-icons md-24 icon-nav" href="{{ url_for('main_page') }}" title="Home">home</a>
         {% if 'username' in session %}
-            <a class="material-icons md-24 icon-nav" href="{{ url_for('add_question') }}">post_add</a>
-            <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}">label</a>
+            <a class="material-icons md-24 icon-nav" href="{{ url_for('add_question') }}" title="New Question">post_add</a>
+            <a class="material-icons md-24 icon-nav" href="{{ url_for('list_tags') }}" title="Tags">label</a>
             <p class="float_right">{{ session['username'] }} logged in</p>
             <a class="material-icons md-24 icon-nav float_right" href="{{ url_for('route_logout') }}">logout</a>
         {% endif %}

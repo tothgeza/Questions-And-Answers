@@ -1,11 +1,8 @@
 import os
 import psycopg2
 import psycopg2.extras
-# import os.path
 from os import path
 
-# QUESTION_FILE_PATH = os.getenv('QUESTION_FILE_PATH') if 'QUESTION_FILE_PATH' in os.environ else 'question.csv'
-# ANSWER_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'question.csv'
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 UPLOADER_FOLDER = os.path.join(PROJECT_ROOT, 'static', 'images')
 
